@@ -1,1 +1,48 @@
-/* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css2?family=Aleo:ital,wght@0,100..900;1,100..900&display=swap");
+
+.main-font {
+  font-family: "Aleo", serif;
+  font-style: normal;
+}
+
+.yellow-text {
+  color: #ffc82e;
+}
+
+.green-text {
+  color: #005643;
+}
+
+.yellow-button {
+  background-color: #ffc82e !important;
+  color: #005643 !important;
+  border: 2px solid #ffc82e !important;
+  transition: all 0.3s ease !important;
+}
+
+.yellow-button:hover {
+  background-color: #e6b829 !important;
+  color: #005643 !important;
+  border: 2px solid #e6b829 !important;
+}
+
+.green-button {
+    background-color: #005643 !important;
+    color: #e6b829 !important;
+    border: 2px solid #005643 !important;
+    transition: all 0.3s ease !important;
+  }
+  
+  .green-button:hover {
+    background-color: #005643 !important;
+    color: #e6b829 !important;
+    border: 2px solid #005643 !important;
+  }
+
+  .green-bg {
+    background-color: #005643 !important;
+  }
+
+  .yellow-bg {
+    background-color: #ffc82e;
+  }
