@@ -1,8 +1,10 @@
-import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit, inject } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
 import { LoginPageComponent } from './login-page/login-page.component';
+import { AuthService } from './auth.service';
+
 
 @Component({
   selector: 'app-root',
@@ -24,6 +26,9 @@ export class AppComponent implements AfterViewInit {
   navbarHeight: number = 0;
   footerHeight: number = 0;
 
+ auth = inject(AuthService);
+
+
   ngAfterViewInit() {
     this.navbarHeight = this.navbar.nativeElement.offsetHeight;
     this.footerHeight = this.footer.nativeElement.offsetHeight;
@@ -37,4 +42,6 @@ export class AppComponent implements AfterViewInit {
       `${this.footerHeight}px`
     );
   }
+  
+  loggedIn: boolean = this.auth.isLoggedIn$()
 }

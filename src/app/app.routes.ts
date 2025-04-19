@@ -8,11 +8,6 @@ import { ProfilePageComponent } from './profile-page/profile-page.component';
 export const routes: Routes = [
     {
         path:"",
-        component: LoginPageComponent,
-        title: "StudyBuddies - Login"
-    },
-    {
-        path:"match",
         component: MatchingPageComponent,
         title: "StudyBuddies - Match"
     },

@@ -2,7 +2,12 @@
   <app-navbar #navbar></app-navbar>
 
   <main class="main-content flex-grow-1">
-    <router-outlet></router-outlet>
+    @if (!auth.isLoggedIn$()) {
+      <app-login-page></app-login-page>
+    } @else {
+      <router-outlet></router-outlet>
+    }
+    
   </main>
 
   <app-footer #footer></app-footer>
