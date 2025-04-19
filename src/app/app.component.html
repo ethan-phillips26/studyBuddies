@@ -1,9 +1,9 @@
-<div class="page-wrapper d-flex flex-column min-vh-100  main-font">
-  <app-navbar></app-navbar>
+<div class="page-wrapper min-vh-100 main-font">
+  <app-navbar #navbar></app-navbar>
 
-  <main class="flex-fill">
-    <router-outlet></router-outlet>
+  <main class="main-content flex-grow-1">
+    <app-login-page></app-login-page>
   </main>
 
-  <app-footer></app-footer>
+  <app-footer #footer></app-footer>
 </div>
