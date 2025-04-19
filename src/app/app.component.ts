@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
 import { LoginPageComponent } from './login-page/login-page.component';
@@ -10,7 +10,8 @@ import { LoginPageComponent } from './login-page/login-page.component';
     RouterOutlet,
     NavbarComponent,
     FooterComponent,
-    LoginPageComponent
+    LoginPageComponent,
+    RouterLink,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
