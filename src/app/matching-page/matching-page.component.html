@@ -1,1 +1,5 @@
-<p>matching-page works!</p>
+@for (match of matches; track $index) {
+    <h3>{{ match.name }}</h3>
+    <p>Interest: {{ match.interest }}</p>
+  }
+  
