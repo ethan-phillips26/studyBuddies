@@ -17,7 +17,6 @@ export class AuthService {
   private userSubject = signal<User | null>(null);
   user$ = this.userSubject.asReadonly();
   private firestore = inject(Firestore);
-  private userCollection = collection(this.firestore, 'users');
 
   constructor() {
 
