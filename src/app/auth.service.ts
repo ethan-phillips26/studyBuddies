@@ -49,11 +49,11 @@ export class AuthService {
         this.isLoggedIn.set(true);
 
 
-        // Check if user exists in Firestore using their UID
+        // Check if user exists in Firestore using their uid
         const userDocRef = doc(this.firestore, `users/${result.user.uid}`);
         const userDoc = await getDoc(userDocRef);
 
-        // If the user document doesn't exist, create it
+        // If the user document doesn't exist then create it
         if (!userDoc.exists()) {
           const userData = {
             name: result.user.displayName || 'Unnamed User',
@@ -62,8 +62,9 @@ export class AuthService {
             lname: 'n/a',
             strengths: 'n/a',
             weaknesses: 'n/a', 
-            bio: 'n/a', 
-            // Add additional fields we want later
+            bio: 'n/a',
+            freeTimes: 'n/a',
+            classes: 'n/a',
           };
           
           // Add the user to Firestore

@@ -33,12 +33,20 @@ export class UserService {
     updateDoc(this.userDocRef, {strengths: strengths})
   }
 
-  setWeaknesses(weaknessess: string) {
-    updateDoc(this.userDocRef, {weaknessess: weaknessess})
+  setWeaknesses(weaknesses: string) {
+    updateDoc(this.userDocRef, {weaknesses: weaknesses})
   }
   
   setBio(bio: string) {
     updateDoc(this.userDocRef, {bio: bio})
+  }
+
+  setFreeTimes(freeTimes: string) {
+    updateDoc(this.userDocRef, {freeTimes: freeTimes})
+  }
+
+  setClasses(classes: string) {
+    updateDoc(this.userDocRef, {Classes: classes})
   }
 
 
