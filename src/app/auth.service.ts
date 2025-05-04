@@ -1,46 +1,101 @@
 import { inject, Injectable } from '@angular/core';
-import { GoogleAuthProvider, signInAnonymously, signInWithPopup, signOut } from 'firebase/auth';
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut,
+} from 'firebase/auth';
 import { Auth, onAuthStateChanged, User } from '@angular/fire/auth';
-import { BehaviorSubject } from 'rxjs';
 import { signal } from '@angular/core';
-
+import { Firestore, collection, collectionData, doc, setDoc, getDoc } from '@angular/fire/firestore';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
   private auth = inject(Auth);
   private isLoggedIn = signal(false);
-
-  private userSubject = new BehaviorSubject<User | null>(null);
-  user$ = this.userSubject.asObservable();
+  private userSubject = signal<User | null>(null);
+  user$ = this.userSubject.asReadonly();
+  private firestore = inject(Firestore);
 
   constructor() {
+
     onAuthStateChanged(this.auth, (user) => {
-      this.userSubject.next(user);
       if (user) {
+        this.userSubject.set(user);
         this.isLoggedIn.set(true);
       } else {
+        this.userSubject.set(null);
         this.isLoggedIn.set(false);
       }
     });
   }
 
-  getCurrentUser(): User | null {
-    return this.userSubject.getValue();
-  }
   signIn() {
     const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({ hd: 'ndsu.edu' });
+
     return signInWithPopup(this.auth, provider)
+      .then(async (result) => {
+        const email = result.user.email || '';
+
+        if (!email.endsWith('@ndsu.edu')) {
+          alert('You must use your NDSU email to sign in.');
+          await signOut(this.auth);
+          return;
+        }
+
+        this.userSubject.set(result.user);
+        this.isLoggedIn.set(true);
+
+
+        // Check if user exists in Firestore using their uid
+        const userDocRef = doc(this.firestore, `users/${result.user.uid}`);
+        const userDoc = await getDoc(userDocRef);
+
+        // If the user document doesn't exist then create it
+        if (!userDoc.exists()) {
+          const userData = {
+            name: result.user.displayName,
+            email: result.user.email,
+            fname: '',
+            lname: '',
+            strengths: '',
+            weaknesses: '', 
+            bio: '',
+            freeTimes: '',
+            classes: '',
+            imageURL: '',
+          };
+          
+          // Add the user to Firestore
+          await setDoc(userDocRef, userData);
+        }
+
+
+
+
+      })
+      .catch((error) => {
+        console.error('Google sign-in error:', error);
+        throw error;
+      });
+
+      
   }
 
   signOut() {
-    const provider = new GoogleAuthProvider();
-    return signOut(this.auth);
+    return signOut(this.auth)
+      .then(() => {
+        this.isLoggedIn.set(false);
+        this.userSubject.set(null);
+      })
+      .catch((error) => {
+        console.error('Sign-out error:', error);
+      });
   }
 
   get isLoggedIn$() {
-    return this.isLoggedIn;
+    return this.isLoggedIn.asReadonly();
   }
 }

@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { MatchService, Match } from '../match.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-matching-page',
@@ -6,6 +9,23 @@ import { Component } from '@angular/core';
   templateUrl: './matching-page.component.html',
   styleUrl: './matching-page.component.css'
 })
-export class MatchingPageComponent {
+export class MatchingPageComponent implements OnInit {
+  matches: Match[] = [];
+
+  constructor(private matchService: MatchService) {}
+
+  ngOnInit(): void {
+    this.matchService.getMatches().subscribe({
+      next: (data) => {
+        this.matches = data;
+      },
+      error: (error) => {
+        console.error('Error fetching matches', error);
+      },
+      complete: () => {
+        console.log('Data fetching complete');
+      }
+    });
+  }
 
 }
