@@ -7,7 +7,7 @@
         <i class="bi bi-pencil"></i> Edit
       </button>
       } @else {
-        <button class="btn green-button shadow-sm" (click)="toggleEdit()">
+        <button class="btn green-button shadow-sm" (click)="save()" (click)="toggleEdit()">
           Save
         </button>
       }
@@ -28,10 +28,24 @@
                 style="object-fit: cover; border: 1px solid #ccc; margin-top: 10px;"
                 />   
             }     
+            @if (!imagePreview && currentImageURL) {
+              <img
+              [src]="currentImageURL"
+              alt="Image Preview"
+              width="200"
+              height="200"
+              style="object-fit: cover; border: 1px solid #ccc; margin-top: 10px;"
+              />   
+          }    
         </div>
         <div class="mb-3 text-start">
           <label for="bio" class="form-label">Brief Bio</label>
-          <textarea id="bio" class="form-control" placeholder="Tell us about yourself" [disabled]="!isEditing"></textarea>
+          @if(currentBio == "") {
+            <textarea id="bio" class="form-control" placeholder="Tell us about yourself" [disabled]="!isEditing" [(ngModel)]="bio"></textarea>
+          } @else {
+            <textarea id="bio" class="form-control" placeholder={{currentBio}} [disabled]="!isEditing" [(ngModel)]="bio"></textarea>
+          }
+          
         </div>
       </div>
   
@@ -39,15 +53,27 @@
       <div class="col-md-4">
         <div class="mb-3">
           <label for="firstName" class="form-label">First Name</label>
-          <input id="firstName" class="form-control" placeholder="First Name" [disabled]="!isEditing">
+          @if(currentFname == "") {
+            <input id="firstName" class="form-control" placeholder="First Name" [disabled]="!isEditing" [(ngModel)]="fname">
+          } @else {
+            <input id="firstName" class="form-control" placeholder={{currentFname}} [disabled]="!isEditing" [(ngModel)]="fname">
+          }
         </div>
         <div class="mb-3">
           <label for="strengths" class="form-label">Strengths</label>
-          <textarea id="strengths" class="form-control" placeholder="Enter your academic strengths" [disabled]="!isEditing"></textarea>
+          @if(currentStrengths == "") {
+            <textarea id="strengths" class="form-control" placeholder="Enter your academic strengths" [disabled]="!isEditing" [(ngModel)]="strengths"></textarea>
+          } @else {
+            <textarea id="strengths" class="form-control" placeholder={{currentStrengths}} [disabled]="!isEditing" [(ngModel)]="strengths"></textarea>
+          }
         </div>
         <div class="mb-3">
           <label for="weaknesses" class="form-label">Weaknesses</label>
-          <textarea id="weaknesses" class="form-control" placeholder="Enter your academic weaknesses" [disabled]="!isEditing"></textarea>
+          @if(currentWeaknesses == "") {
+            <textarea id="weaknesses" class="form-control" placeholder="Enter your academic weaknesses" [disabled]="!isEditing" [(ngModel)]="weaknesses"></textarea>
+          } @else {
+            <textarea id="weaknesses" class="form-control" placeholder={{currentWeaknesses}} [disabled]="!isEditing" [(ngModel)]="weaknesses"></textarea>
+          }
         </div>
       </div>
   
@@ -55,15 +81,27 @@
       <div class="col-md-4">
         <div class="mb-3">
           <label for="lastName" class="form-label">Last Name</label>
-          <input id="lastName" class="form-control" placeholder="Last Name" [disabled]="!isEditing">
+          @if(currentLname == "") {
+            <input id="lastName" class="form-control" placeholder="Last Name" [disabled]="!isEditing" [(ngModel)]="lname">
+          } @else {
+            <input id="lastName" class="form-control" placeholder={{currentLname}} [disabled]="!isEditing" [(ngModel)]="lname">
+          }
         </div>
         <div class="mb-3">
             <label for="freeTimes" class="form-label">Free Times</label>
-            <textarea id="freeTimes" class="form-control" placeholder="Enter the times you are free to study" [disabled]="!isEditing"></textarea>
+            @if(currentFreeTimes == "") {
+              <textarea id="freeTimes" class="form-control" placeholder="Enter the times you are free to study" [disabled]="!isEditing" [(ngModel)]="freeTimes"></textarea>
+            } @else {
+              <textarea id="freeTimes" class="form-control" placeholder={{currentFreeTimes}} [disabled]="!isEditing" [(ngModel)]="freeTimes"></textarea>
+            }
         </div>
         <div class="mb-3">
           <label for="classes" class="form-label">Classes</label>
-          <textarea id="classes" class="form-control" placeholder="Enter the classes you’d like a study buddy for" [disabled]="!isEditing"></textarea>
+          @if(currentClasses == "") {
+            <textarea id="classes" class="form-control" placeholder="Enter the classes you’d like a study buddy for" [disabled]="!isEditing" [(ngModel)]="classes"></textarea>
+          } @else {
+            <textarea id="classes" class="form-control" placeholder={{currentClasses}} [disabled]="!isEditing" [(ngModel)]="classes"></textarea>
+          }
         </div>
       </div>
     </div>
