@@ -17,7 +17,6 @@ export class AuthService {
   private userSubject = signal<User | null>(null);
   user$ = this.userSubject.asReadonly();
   private firestore = inject(Firestore);
-  private userCollection = collection(this.firestore, 'users');
 
   constructor() {
 
@@ -50,16 +49,22 @@ export class AuthService {
         this.isLoggedIn.set(true);
 
 
-        // Check if user exists in Firestore using their UID
+        // Check if user exists in Firestore using their uid
         const userDocRef = doc(this.firestore, `users/${result.user.uid}`);
         const userDoc = await getDoc(userDocRef);
 
-        // If the user document doesn't exist, create it
+        // If the user document doesn't exist then create it
         if (!userDoc.exists()) {
           const userData = {
             name: result.user.displayName || 'Unnamed User',
             email: result.user.email || 'No Email',
-            // Add additional fields we want later
+            fname: 'n/a',
+            lname: 'n/a',
+            strengths: 'n/a',
+            weaknesses: 'n/a', 
+            bio: 'n/a',
+            freeTimes: 'n/a',
+            classes: 'n/a',
           };
           
           // Add the user to Firestore
