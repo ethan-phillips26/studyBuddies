@@ -58,6 +58,11 @@ export class AuthService {
           const userData = {
             name: result.user.displayName || 'Unnamed User',
             email: result.user.email || 'No Email',
+            fname: 'n/a',
+            lname: 'n/a',
+            strengths: 'n/a',
+            weaknesses: 'n/a', 
+            bio: 'n/a', 
             // Add additional fields we want later
           };
           

@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { MatchService, Match } from '../match.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-matching-page',
-  standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './matching-page.component.html',
   styleUrl: './matching-page.component.css'
 })
@@ -18,11 +18,14 @@ export class MatchingPageComponent implements OnInit {
     this.matchService.getMatches().subscribe({
       next: (data) => {
         this.matches = data;
-        console.log('Fetched matches:', data);
       },
       error: (error) => {
         console.error('Error fetching matches', error);
+      },
+      complete: () => {
+        console.log('Data fetching complete');
       }
     });
   }
+
 }
