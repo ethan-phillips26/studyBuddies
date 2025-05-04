@@ -1,1 +1,133 @@
-<p>profile-page works!</p>
+<div class="container-fluid py-5">
+    <!-- Header Row -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1 class="green-text fw-bold">Profile</h1>
+      @if (!isEditing) {
+      <button class="btn green-button shadow-sm" (click)="toggleEdit()">
+        <i class="bi bi-pencil"></i> Edit
+      </button>
+      } @else {
+        <button class="btn green-button shadow-sm" (click)="toggleEdit()">
+          Save
+        </button>
+      }
+    </div>
+  
+    <!-- Profile Body -->
+    <div class="row">
+      <!-- Left Column: Image and Bio -->
+      <div class="col-md-4 text-center">
+        <div class="mb-4">
+            <input type="file" accept="image/*" (change)="onFileSelected($event)" [style]="isEditing ? '' : 'display:none'"/>
+            @if (imagePreview) {
+                <img
+                [src]="imagePreview"
+                alt="Image Preview"
+                width="200"
+                height="200"
+                style="object-fit: cover; border: 1px solid #ccc; margin-top: 10px;"
+                />   
+            }     
+        </div>
+        <div class="mb-3 text-start">
+          <label for="bio" class="form-label">Brief Bio</label>
+          <textarea id="bio" class="form-control" placeholder="Tell us about yourself" [disabled]="!isEditing"></textarea>
+        </div>
+      </div>
+  
+      <!-- Middle Column: First Name, Strengths, Weaknesses -->
+      <div class="col-md-4">
+        <div class="mb-3">
+          <label for="firstName" class="form-label">First Name</label>
+          <input id="firstName" class="form-control" placeholder="First Name" [disabled]="!isEditing">
+        </div>
+        <div class="mb-3">
+          <label for="strengths" class="form-label">Strengths</label>
+          <textarea id="strengths" class="form-control" placeholder="Enter your academic strengths" [disabled]="!isEditing"></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="weaknesses" class="form-label">Weaknesses</label>
+          <textarea id="weaknesses" class="form-control" placeholder="Enter your academic weaknesses" [disabled]="!isEditing"></textarea>
+        </div>
+      </div>
+  
+      <!-- Right Column: Last Name, Free Times, Classes -->
+      <div class="col-md-4">
+        <div class="mb-3">
+          <label for="lastName" class="form-label">Last Name</label>
+          <input id="lastName" class="form-control" placeholder="Last Name" [disabled]="!isEditing">
+        </div>
+        <div class="mb-3">
+            <label for="freeTimes" class="form-label">Free Times</label>
+            <textarea id="freeTimes" class="form-control" placeholder="Enter the times you are free to study" [disabled]="!isEditing"></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="classes" class="form-label">Classes</label>
+          <textarea id="classes" class="form-control" placeholder="Enter the classes you’d like a study buddy for" [disabled]="!isEditing"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+
+
+
+<!-- <div class="container">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-success fw-bold">Profile</h1>
+        <button class="btn btn-light shadow-sm">
+          <i class="bi bi-pencil"></i> Edit
+        </button>
+      </div>
+    <div class="row">
+        <div class="col-6">
+            <h1 class="green-text">Profile</h1>
+        </div>
+        <div class="col-6">
+            <button>Edit</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div>
+                <img alt="Photo placeholder">
+            </div>
+            <div>
+                <div>
+                    <label for="bio">Brief Bio</label>
+                </div>
+                <input id="bio">
+            </div>
+        </div>
+        <div class="col">
+            <div>
+                <label>First Name</label>
+                <input>
+            </div>
+            <div>
+                <label>Strengths</label>
+                <input>
+            </div>
+            <div>
+                <label>Weakness</label>
+                <input>
+            </div>
+        </div>
+        <div class="col">
+            <div>
+                <label>Last Name</label>
+                <input>
+            </div>
+            <div>
+                <label>Free Times</label>
+                <input>
+            </div>
+            <div>
+                <label>Classes</label>
+                <input>
+            </div>
+        </div>
+    </div>
+</div> -->
