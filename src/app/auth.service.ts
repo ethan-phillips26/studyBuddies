@@ -56,15 +56,16 @@ export class AuthService {
         // If the user document doesn't exist then create it
         if (!userDoc.exists()) {
           const userData = {
-            name: result.user.displayName || 'Unnamed User',
-            email: result.user.email || 'No Email',
-            fname: 'n/a',
-            lname: 'n/a',
-            strengths: 'n/a',
-            weaknesses: 'n/a', 
-            bio: 'n/a',
-            freeTimes: 'n/a',
-            classes: 'n/a',
+            name: result.user.displayName,
+            email: result.user.email,
+            fname: '',
+            lname: '',
+            strengths: '',
+            weaknesses: '', 
+            bio: '',
+            freeTimes: '',
+            classes: '',
+            imageURL: '',
           };
           
           // Add the user to Firestore
