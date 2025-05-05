@@ -4,6 +4,8 @@ import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideRouter } from '@angular/router';
 import { provideFirestore, getFirestore} from '@angular/fire/firestore'
 import { routes } from './app.routes';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideStorage, getStorage } from '@angular/fire/storage';
 
 
 const firebaseConfig = {
@@ -22,6 +24,8 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideFirestore(() => getFirestore()),
-    provideAuth(() => getAuth())
+    provideAuth(() => getAuth()),
+    provideHttpClient(withInterceptorsFromDi()),
+    provideStorage(() => getStorage()),
   ],
 };

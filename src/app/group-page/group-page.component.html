@@ -1,1 +1,67 @@
-<p>group-page works!</p>
+<div class="container">
+    <div class="row">
+        <div class="col-4 mb-4">
+            <h1>Buddy Up!</h1>
+            <input type="text" placeholder="Search by class" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-9">
+            <div class="card yellow-bg">
+                <div class="row p-3">
+                    @for (i of [0, 1, 2, 3, 4]; track i) {
+                        <div class="col-6 mb-2">
+                            <div class="card p-2">
+                                <h3>Class Name</h3>
+                                <h6>Member 1, Member 2, etc..</h6>
+                                <p>Brief description of the course content that will be studied</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <h5>Can't find a group that works for you? Create your own!</h5>
+            <button class="btn green-button" data-bs-toggle="modal" data-bs-target="#createGroupModal">
+                Create a Group
+            </button>
+        </div>
+    
+  
+        <!-- Modal Structure -->
+        <div class="modal fade" id="createGroupModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header yellow-bg green-text">
+                        <h4 class="modal-title" id="createGroupModalLabel">Create a Group</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="class" class="form-label"><b>Class</b></label>
+                            <input id="class" class="form-control" placeholder="Enter class">
+                        </div>
+                        <div class="mb-3">
+                            <label for="studyContent" class="form-label"><b>Studying Content</b></label>
+                            <textarea id="studyContent" class="form-control" placeholder="Brief description of the course content that will be studied"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="numMembers" class="form-label"><b>Number of Members</b></label>
+                            <input id="numMembers" class="form-control" placeholder="Enter maximum number of members for group" />
+                        </div>
+                        <div class="mb-3">
+                          <label for="freeTimes" class="form-label"><b>Free Times</b></label>
+                          <textarea id="freeTimes" class="form-control" placeholder="Enter the times you are free to study"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn yellow-button" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn green-button">Create Group</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+  
+    </div>
+</div>
