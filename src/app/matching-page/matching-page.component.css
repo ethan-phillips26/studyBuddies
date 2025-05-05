@@ -1,0 +1,26 @@
+#match_buttons {
+    font-size: 5em;
+    margin-top: 2.5em;
+}
+
+#profile {
+    width: 50em;
+    height: 40em;
+    background-color: #ffc82e;
+    border-radius: 5%;
+}
+
+#item {
+    border-radius: 2%;
+    overflow: auto;
+    height: 250px;
+    margin: 5px;
+    background-color: #005643;
+}
+h4 {
+    color: white;
+}
+
+p {
+    color: #ffc82e;
+}
