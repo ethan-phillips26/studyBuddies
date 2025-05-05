@@ -112,6 +112,17 @@ export class UserService {
     return userData ? userData['imageUrl'] : null;
   }
 
+  async getStreamKey(): Promise<string | null> {
+    const userData = await this.getData();
+    return userData ? userData['streamKey'] : null;
+  }
+
+  getUid() {
+    return this.user?.uid;
+  }
+
+
+
   
   
 }
