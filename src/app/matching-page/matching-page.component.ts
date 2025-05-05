@@ -8,4 +8,13 @@ import { Component } from '@angular/core';
 })
 export class MatchingPageComponent {
 
+
+  firstname:string = '';
+  lastname:string = '';
+  bio: string = '';
+  strengths: string = '';
+  weaknesses: string = '';
+  classes: string = '';
+  freeTimes: string = '';
+
 }
