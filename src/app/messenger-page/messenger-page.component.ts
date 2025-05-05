@@ -76,18 +76,43 @@ export class MessengerPageComponent implements OnInit {
     this.streamI18nService.setTranslation();
 
 
-
-
     
-    const channel = this.chatService.chatClient.channel('messaging', 'talking-about-angular', {
-      // add as many custom fields as you'd like
-      image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/2048px-Angular_full_color_logo.svg.png',
-      name: 'Talking about Angular',
-    });
-    await channel.create();
+
+    const matches = ['john', 'bobby', 'tod'];
+
+    for (const match of matches) {
+      const channel = this.chatService.chatClient.channel('messaging', {
+        members: [uid, match],
+        name: `Chat with ${match}`,
+      });
+    
+      // Force channel creation
+      try {
+        await channel.create();
+        await channel.watch(); // Optional, for real-time updates
+        console.log(`Created channel with ${match}`);
+      } catch (error) {
+        console.error(`Failed to create channel with ${match}`, error);
+      }
+    }
+    
+    
+
     this.channelService.init({
       type: 'messaging',
-      id: { $eq: 'talking-about-angular' },
+      members: { $in: [uid]},
     });
+
+
+
+    // this.channelService.init({
+    //   type: 'messaging',
+    //   members: { $in: [uid] },
+    // });
+    
+    
   }
-}
+
+  }
+  
+
