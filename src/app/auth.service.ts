@@ -9,6 +9,8 @@ import { signal } from '@angular/core';
 import { Firestore, collection, collectionData, doc, setDoc, getDoc } from '@angular/fire/firestore';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom, Observable } from 'rxjs';
+import { StreamChat } from 'stream-chat';
+
 
 @Injectable({
   providedIn: 'root',
@@ -76,6 +78,18 @@ export class AuthService {
           
           // Add the user info to Firestore database
           await setDoc(userDocRef, userData);
+
+
+          const chatClient = new StreamChat('25tf5sakkgnx');
+          const streamUser = {
+                id: result.user.uid,
+                name: "",
+                image: "",
+              };
+
+
+              chatClient.connectUser(streamUser, streamKey);
+              chatClient.upsertUser(streamUser);
         }
 
 
@@ -116,6 +130,8 @@ export class AuthService {
   }
   
   
+  
+
   
 
 }

@@ -53,6 +53,19 @@ export class MessengerPageComponent implements OnInit {
     return imageUrl;
   }
 
+  async getName(): Promise<string> {
+    const fname = await this.user.getFname();
+    if (!fname) {
+      throw new Error('fname is missing');
+    }
+
+    const lname = await this.user.getLname();
+    if (!lname) {
+      throw new Error('lname is missing');
+    }
+    return fname + " " + lname;
+  }
+
 
   
 
@@ -64,7 +77,7 @@ export class MessengerPageComponent implements OnInit {
     const userId = uid;
     const userToken = token;
     console.log(token);
-    const userName = 'lucky';
+    const userName = await this.getName();
 
     const user: User = {
       id: userId,
@@ -78,23 +91,18 @@ export class MessengerPageComponent implements OnInit {
 
     
 
-    const matches = ['john', 'bobby', 'tod'];
 
-    for (const match of matches) {
-      const channel = this.chatService.chatClient.channel('messaging', {
-        members: [uid, match],
-        name: `Chat with ${match}`,
-      });
+
+      // const channel = this.chatService.chatClient.channel('messaging', {
+      //   members: [uid,  'U96Ac2uspieBR7KpwAObYe5SPKi1'],
+      //   name: `Ethan Phillips and Izzy Martinez`,
+      // });
     
-      // Force channel creation
-      try {
-        await channel.create();
-        await channel.watch(); // Optional, for real-time updates
-        console.log(`Created channel with ${match}`);
-      } catch (error) {
-        console.error(`Failed to create channel with ${match}`, error);
-      }
-    }
+    
+      //   await channel.create();
+      //   await channel.watch(); // Optional, for real-time updates
+     
+    
     
     
 
