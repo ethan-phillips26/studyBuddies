@@ -28,4 +28,13 @@ export class MatchingPageComponent implements OnInit {
     });
   }
 
+
+  firstname:string = '';
+  lastname:string = '';
+  bio: string = '';
+  strengths: string = '';
+  weaknesses: string = '';
+  classes: string = '';
+  freeTimes: string = '';
+
 }
