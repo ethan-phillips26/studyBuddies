@@ -7,6 +7,10 @@ import {
 import { Auth, onAuthStateChanged, User } from '@angular/fire/auth';
 import { signal } from '@angular/core';
 import { Firestore, collection, collectionData, doc, setDoc, getDoc } from '@angular/fire/firestore';
+import { HttpClient } from '@angular/common/http';
+import { firstValueFrom, Observable } from 'rxjs';
+import { StreamChat } from 'stream-chat';
+
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +21,8 @@ export class AuthService {
   private userSubject = signal<User | null>(null);
   user$ = this.userSubject.asReadonly();
   private firestore = inject(Firestore);
+
+  http = inject(HttpClient);
 
   constructor() {
 
@@ -53,8 +59,9 @@ export class AuthService {
         const userDocRef = doc(this.firestore, `users/${result.user.uid}`);
         const userDoc = await getDoc(userDocRef);
 
-        // If the user document doesn't exist then create it
+        // If the user document doesn't exist then create it with fields set to empty
         if (!userDoc.exists()) {
+          const streamKey = await this.generateStreamKey(result.user.uid);
           const userData = {
             name: result.user.displayName,
             email: result.user.email,
@@ -66,10 +73,23 @@ export class AuthService {
             freeTimes: '',
             classes: '',
             imageURL: '',
+            streamKey: streamKey,
           };
           
-          // Add the user to Firestore
+          // Add the user info to Firestore database
           await setDoc(userDocRef, userData);
+
+
+          const chatClient = new StreamChat('25tf5sakkgnx');
+          const streamUser = {
+                id: result.user.uid,
+                name: "",
+                image: "",
+              };
+
+
+              chatClient.connectUser(streamUser, streamKey);
+              chatClient.upsertUser(streamUser);
         }
 
 
@@ -98,4 +118,20 @@ export class AuthService {
   get isLoggedIn$() {
     return this.isLoggedIn.asReadonly();
   }
+
+  async generateStreamKey(firebaseUid: string): Promise<string> {
+    const response = await firstValueFrom(
+      this.http.post('http://127.0.0.1:8000/generate-stream-key/', //add api url here when backend deployed
+        { firebaseUid },
+        { responseType: 'text' }
+      )
+    );
+    return response;
+  }
+  
+  
+  
+
+  
+
 }

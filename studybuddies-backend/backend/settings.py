@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -128,3 +129,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS = True
 
+# STREAM_API_KEY = "25tf5sakkgnx"
+# STREAM_API_SECRET = "4kbv2fwdzzv63q8w463u5zav9qa8v5e37c4d7qcv9pnwk3cfskmak27sh3v8s5pd"
