@@ -1,14 +1,30 @@
 # StudyBuddies
 
+## Angular Setup
+
+### Prerequisites
+- Node.js
+- npm
+
+### Run Angular Server
+```bash
+ng serve
+```
+
+---
+
 ## Django Setup
 
 ### Prerequisites
 - Python 3.8+ installed
-- `pip` (Python package manager)
+- pip
 
----
+### Install Dependencies
+```bash
+npm install
+```
 
-## Create Virtual Environnment 
+## Create Virtual Environment
 ```bash
 python -m venv venv
 ```
@@ -24,7 +40,7 @@ python -m venv venv
   source venv/bin/activate
   ```
 
-## Install Depenencies
+## Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
