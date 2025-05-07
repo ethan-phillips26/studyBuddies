@@ -122,7 +122,7 @@ export class AuthService {
 
   async generateStreamKey(firebaseUid: string): Promise<string> {
     const response = await firstValueFrom(
-      this.http.post('http://127.0.0.1:8000/generate-stream-key/', //add api url here when backend deployed
+      this.http.post('https://studybuddies-3o3m.onrender.com/generate-stream-key/', //add api url here when backend deployed
         { firebaseUid },
         { responseType: 'text' }
       )
