@@ -1,5 +1,7 @@
 # StudyBuddies
 
+Deployed site: https://ethan-phillips26.github.io/studyBuddies/
+
 ## Angular Setup
 
 ### Prerequisites
