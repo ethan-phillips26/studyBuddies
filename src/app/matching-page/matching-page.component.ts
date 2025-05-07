@@ -12,7 +12,7 @@ import { MessagingService } from '../messenging.service';
 export class MatchingPageComponent implements OnInit {
   matches: string[] = [];
   user = inject(UserService);
-  private apiUrl = 'http://127.0.0.1:8000/match/';
+  private apiUrl = 'https://studybuddies-3o3m.onrender.com/match/';
   http = inject(HttpClient);
   message = inject(MessagingService);
 
