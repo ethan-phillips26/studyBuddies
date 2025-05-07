@@ -1,58 +1,70 @@
+@if(!profileComplete()) {
+<h1>Please fully complete your profile to access matching!</h1>
+} @else { @if(currentMatches()) {
 <div class="container">
-    <div class="row">
-        <div class="col">
-            <button id="match_buttons" class="btn" (click)="null">
-                <i class="bi bi-hand-thumbs-down"></i>
-            </button>
-        </div>
-        <div class="col">
-            <div  id="profile" class="card p-3">
-                <div class="row">
-                    <div class="col">
-                        <img src="" alt="Profile Pic PlaceHolder">
-                    </div>
-                    <div class="col">
-                        <h2>{{ firstname }} {{ lastname }} name placeholder</h2>
-                    </div>
-                </div>
-                <br>
-                <div class="row">
-                    <div class="col card" id="item">
-                        <h4>Bio:</h4>
-                        <p>{{ bio }} bio placeholder</p>
-                    </div>
-                    <div class="col card" id="item">
-                        <div>
-                            <h4>Strengths:</h4>
-                            <p>
-                                {{ strengths }} strengths placeholder
-                            </p>
-                        </div>
-                        <div>
-                            <h4>Weaknesses:</h4>
-                            <p>
-                                {{ weaknesses }} weaknesses placeholder
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col card" id="item">
-                        <h4>Free Times:</h4>
-                        <p>{{ freeTimes }} free times placeholder</p>
-                    </div>
-                    <div class="col card" id="item">
-                        <h4>Classes:</h4>
-                        <p>{{ classes}} classes placeholder</p>
-                    </div>
-                </div>
-                
-            </div>
-        </div>
-        <div class="col">
-            <button id="match_buttons" class="btn" (click)="null" >
-                <i class="bi bi-hand-thumbs-up"></i>
-            </button>
-        </div>
+  <div class="row">
+    <div class="col">
+      <button id="match_buttons" class="btn" (click)="dislike()">
+        <i class="bi bi-hand-thumbs-down"></i>
+      </button>
     </div>
+    <div class="col">
+      <div id="profile" class="card p-3">
+        <div class="row align-items-center">
+          <div class="col-auto">
+            <img
+              [src]="imageUrl"
+              alt="Profile Pic"
+              width="100"
+              height="100"
+              class="rounded-circle border"
+              style="
+                object-fit: cover;
+                border: 1px solid #ccc;
+                margin-top: 10px;
+              "
+            />
+          </div>
+          <div class="col">
+            <h2>{{ firstname }} {{ lastname }}</h2>
+          </div>
+        </div>
+        <br />
+        <div class="row">
+          <div class="col card" id="item">
+            <h4>Bio:</h4>
+            <p>{{ bio }}</p>
+          </div>
+          <div class="col card" id="item">
+            <div>
+              <h4>Strengths:</h4>
+              <p>{{ strengths }}</p>
+            </div>
+            <div>
+              <h4>Weaknesses:</h4>
+              <p>{{ weaknesses }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col card" id="item">
+            <h4>Free Times:</h4>
+            <p>{{ freeTimes }}</p>
+          </div>
+          <div class="col card" id="item">
+            <h4>Classes:</h4>
+            <p>{{ classes }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <button id="match_buttons" class="btn" (click)="like()">
+        <i class="bi bi-hand-thumbs-up"></i>
+      </button>
+    </div>
+  </div>
 </div>
+} @else {
+<h1>You have no new matches.</h1>
+} }

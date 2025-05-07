@@ -8,6 +8,7 @@ import {
   StreamChatModule,
 } from 'stream-chat-angular';
 import { UserService } from '../user.service';
+import { MessagingService } from '../messenging.service';
 
 @Component({
   selector: 'app-messenger-page',
@@ -18,6 +19,7 @@ import { UserService } from '../user.service';
 })
 export class MessengerPageComponent implements OnInit {
   user = inject(UserService);
+  message = inject(MessagingService);
 
   constructor(
     private chatService: ChatClientService,
@@ -87,39 +89,37 @@ export class MessengerPageComponent implements OnInit {
 
     this.chatService.init(apiKey, user, userToken);
     this.streamI18nService.setTranslation();
-
-
-    
-
-
-
-      // const channel = this.chatService.chatClient.channel('messaging', {
-      //   members: [uid,  'U96Ac2uspieBR7KpwAObYe5SPKi1'],
-      //   name: `Ethan Phillips and Izzy Martinez`,
-      // });
-    
-    
-      //   await channel.create();
-      //   await channel.watch(); // Optional, for real-time updates
-     
-    
-    
     
 
     this.channelService.init({
       type: 'messaging',
       members: { $in: [uid]},
     });
-
-
-
-    // this.channelService.init({
-    //   type: 'messaging',
-    //   members: { $in: [uid] },
-    // });
-    
-    
+ 
   }
+
+  async onDeleteChannel() {
+    const channel = this.channelService.activeChannel;
+  
+    if (!channel) {
+      alert('No channel is currently selected.');
+      return;
+    }
+  
+    const channelId = channel.id || '';
+  
+    const confirmDelete = confirm(`Are you sure you want to remove this user`);
+  
+    if (confirmDelete) {
+      try {
+        await this.message.deleteChannel(channelId);
+        alert('User Removed!');
+      } catch (error) {
+        console.error('Error deleting channel:', error);
+      }
+    }
+  }
+  
 
   }
   
