@@ -1,6 +1,7 @@
+# match/urls.py
 from django.urls import path
-from match import views
+from .views import match_users
 
 urlpatterns = [
-    path('matches/', views.get_matches, name='get_matches'),
+    path('match/', match_users, name='match_users'),
 ]

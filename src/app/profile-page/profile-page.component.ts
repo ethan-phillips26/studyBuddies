@@ -6,7 +6,7 @@ import { UserService } from '../user.service';
   selector: 'app-profile-page',
   imports: [FormsModule],
   templateUrl: './profile-page.component.html',
-  styleUrl: './profile-page.component.css'
+  styleUrl: './profile-page.component.css',
 })
 export class ProfilePageComponent implements OnInit {
   imagePreview: string | ArrayBuffer | null = null;
@@ -14,21 +14,21 @@ export class ProfilePageComponent implements OnInit {
 
   isEditing: boolean = false;
 
-  fname: string = "";
-  lname: string = "";
-  strengths: string = "";
-  weaknesses: string = "";
-  freeTimes: string = "";
-  classes: string = "";
-  bio: string = "";
-  currentFname: string = "";
-  currentLname: string = "";
-  currentStrengths: string = "";
-  currentWeaknesses: string = "";
-  currentBio: string = "";
-  currentFreeTimes = "";
-  currentClasses: string = "";
-  currentImageURL: string = "";
+  fname: string = '';
+  lname: string = '';
+  strengths: string = '';
+  weaknesses: string = '';
+  freeTimes: string = '';
+  classes: string = '';
+  bio: string = '';
+  currentFname: string = '';
+  currentLname: string = '';
+  currentStrengths: string = '';
+  currentWeaknesses: string = '';
+  currentBio: string = '';
+  currentFreeTimes = '';
+  currentClasses: string = '';
+  currentImageURL: string = '';
 
   private user = inject(UserService);
 
@@ -37,27 +37,24 @@ export class ProfilePageComponent implements OnInit {
     this.getUserData();
   }
 
-
-async ngOnInit() {
-  this.getUserData();
-}
-
+  async ngOnInit() {
+    this.getUserData();
+  }
 
   async getUserData() {
-    this.currentFname = (await this.user.getFname()) || "";
-    this.currentLname = (await this.user.getLname()) || "";
-    this.currentStrengths = (await this.user.getStrengths()) || "";
-    this.currentWeaknesses = (await this.user.getWeaknesses()) || "";
-    this.currentBio = (await this.user.getBio()) || "";
-    this.currentFreeTimes = (await this.user.getFreeTimes()) || "";
-    this.currentClasses = (await this.user.getClasses()) || "";
-    this.currentImageURL = (await this.user.getImageURL()) || "";
-    
-    if(this.imagePreview == null) {
+    this.currentFname = (await this.user.getFname()) || '';
+    this.currentLname = (await this.user.getLname()) || '';
+    this.currentStrengths = (await this.user.getStrengths()) || '';
+    this.currentWeaknesses = (await this.user.getWeaknesses()) || '';
+    this.currentBio = (await this.user.getBio()) || '';
+    this.currentFreeTimes = (await this.user.getFreeTimes()) || '';
+    this.currentClasses = (await this.user.getClasses()) || '';
+    this.currentImageURL = (await this.user.getImageURL()) || '';
+
+    if (this.imagePreview == null) {
       this.imagePreview = this.currentImageURL;
     }
   }
-  
 
   onFileSelected(event: Event): void {
     const file = (event.target as HTMLInputElement).files?.[0];
@@ -84,10 +81,15 @@ async ngOnInit() {
       await this.user.setStrengths(this.strengths);
       await this.user.setWeaknesses(this.weaknesses);
       await this.user.setFreeTimes(this.freeTimes);
-      await this.user.setClasses(this.classes);
+      const formattedClasses = this.classes
+        .split(',')
+        .map((cls) => cls.trim().toLowerCase().replace(/\s+/g, ''));
+
+      await this.user.setClasses(formattedClasses);
+
       await this.user.setBio(this.bio);
     } catch (error) {
-      console.error("Error saving profile:", error);
+      console.error('Error saving profile:', error);
     }
   }
 }

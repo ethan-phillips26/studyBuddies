@@ -43,9 +43,18 @@ export class UserService {
     await updateDoc(this.getUserDocRef(), { freeTimes });
   }
 
-  async setClasses(classes: string) {
+  async setClasses(classes: string[]) {
     await updateDoc(this.getUserDocRef(), { classes });
   }
+  
+  async setMatches(matches: string[]) {
+    const userDocRef = this.getUserDocRef();
+    const docSnap = await getDoc(userDocRef);
+    const existingMatches = docSnap.exists() ? docSnap.data()['matches'] || [] : [];
+    const combinedMatches = [...existingMatches, ...matches];
+    await updateDoc(userDocRef, { matches: combinedMatches });
+  }
+  
 
   async uploadProfileImage(file: File): Promise<string> {
     const user = this.authService.user$();
@@ -121,8 +130,118 @@ export class UserService {
     return this.user?.uid;
   }
 
+  // get other user's data
+  private getOtherUserDocRef(uid: string) {
+    return doc(this.firestore, `users/${uid}`);
+  }
 
+  async getOtherFname(uid: string): Promise<string | null> {
+    const userDocRef = this.getOtherUserDocRef(uid);
+    const userDoc = await getDoc(userDocRef);
 
+    if (userDoc.exists()) {
+      const userData = userDoc.data();
+      return userData ? userData['fname'] : null;
+    } else {
+      throw new Error('User document not found');
+    }
+  }
+
+  async getOtherLname(uid: string): Promise<string | null> {
+    const userDocRef = this.getOtherUserDocRef(uid);
+    const userDoc = await getDoc(userDocRef);
+
+    if (userDoc.exists()) {
+      const userData = userDoc.data();
+      return userData ? userData['lname'] : null;
+    } else {
+      throw new Error('User document not found');
+    }
+  }
+
+  async getOtherStrengths(uid: string): Promise<string | null> {
+    const userDocRef = this.getOtherUserDocRef(uid);
+    const userDoc = await getDoc(userDocRef);
+
+    if (userDoc.exists()) {
+      const userData = userDoc.data();
+      return userData ? userData['strengths'] : null;
+    } else {
+      throw new Error('User document not found');
+    }
+  }
+
+  async getOtherWeaknesses(uid: string): Promise<string | null> {
+    const userDocRef = this.getOtherUserDocRef(uid);
+    const userDoc = await getDoc(userDocRef);
+
+    if (userDoc.exists()) {
+      const userData = userDoc.data();
+      return userData ? userData['weaknesses'] : null;
+    } else {
+      throw new Error('User document not found');
+    }
+  }
+
+  async getOtherFreeTimes(uid: string): Promise<string | null> {
+    const userDocRef = this.getOtherUserDocRef(uid);
+    const userDoc = await getDoc(userDocRef);
+
+    if (userDoc.exists()) {
+      const userData = userDoc.data();
+      return userData ? userData['freeTimes'] : null;
+    } else {
+      throw new Error('User document not found');
+    }
+  }
+
+  async getOtherBio(uid: string): Promise<string | null> {
+    const userDocRef = this.getOtherUserDocRef(uid);
+    const userDoc = await getDoc(userDocRef);
+
+    if (userDoc.exists()) {
+      const userData = userDoc.data();
+      return userData ? userData['bio'] : null;
+    } else {
+      throw new Error('User document not found');
+    }
+  }
+
+  async getOtherClasses(uid: string): Promise<string[] | null> {
+    const userDocRef = this.getOtherUserDocRef(uid);
+    const userDoc = await getDoc(userDocRef);
+
+    if (userDoc.exists()) {
+      const userData = userDoc.data();
+      return userData ? userData['classes'] : null;
+    } else {
+      throw new Error('User document not found');
+    }
+  }
+
+  async getOtherImageURL(uid: string): Promise<string | null> {
+    const userDocRef = this.getOtherUserDocRef(uid);
+    const userDoc = await getDoc(userDocRef);
+
+    if (userDoc.exists()) {
+      const userData = userDoc.data();
+      return userData ? userData['imageUrl'] : null;
+    } else {
+      throw new Error('User document not found');
+    }
+  }
+
+  async getOtherStreamKey(uid: string): Promise<string | null> {
+    const userDocRef = this.getOtherUserDocRef(uid);
+    const userDoc = await getDoc(userDocRef);
+
+    if (userDoc.exists()) {
+      const userData = userDoc.data();
+      return userData ? userData['streamKey'] : null;
+    } else {
+      throw new Error('User document not found');
+    }
+  }
   
   
 }

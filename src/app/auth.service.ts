@@ -71,9 +71,10 @@ export class AuthService {
             weaknesses: '', 
             bio: '',
             freeTimes: '',
-            classes: '',
+            classes: [],
             imageURL: '',
             streamKey: streamKey,
+            matchedUsers: [],
           };
           
           // Add the user info to Firestore database
