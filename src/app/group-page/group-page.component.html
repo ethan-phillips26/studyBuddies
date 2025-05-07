@@ -1,20 +1,27 @@
 <div class="container">
     <div class="row">
-        <div class="col-4 mb-4">
+        <div class="my-4">
             <h1>Buddy Up!</h1>
-            <input type="text" placeholder="Search by class" />
+            <input type="text" placeholder="Search by class" [(ngModel)]="searchQuery" (input)="filterGroups()" />
+            <button class="btn green-button mx-3" data-bs-toggle="modal" data-bs-target="#viewJoinedGroupsModal" (click)="viewJoinedGroups()">View Joined Groups</button>
         </div>
     </div>
     <div class="row">
         <div class="col-9">
-            <div class="card yellow-bg">
+            <div class="card yellow-bg mb-3">
                 <div class="row p-3">
-                    @for (i of [0, 1, 2, 3, 4]; track i) {
+                    @for (group of filteredGroups; track group.id) {
                         <div class="col-6 mb-2">
-                            <div class="card p-2">
-                                <h3>Class Name</h3>
-                                <h6>Member 1, Member 2, etc..</h6>
-                                <p>Brief description of the course content that will be studied</p>
+                            <div class="card group-card p-2">
+                                <h3>{{ group.group_name }}</h3>
+                                <h5>Class: {{ group.class }}</h5>
+                                <p>{{ group.study_content }}</p>
+                                <p>Meeting Location: {{ group.meeting_location }}</p>
+                                <p>Meeting Frequency: {{ group.meeting_frequency }}</p>
+                                <p>Meeting Times: {{ group.meeting_times }}</p>
+                                <p>Max Members: {{ group.max_members }}</p>
+                                <p>Group Members: {{ group.group_members?.join(', ') }}</p>
+                                <button class="btn green-button" (click)="joinGroup(group.id)">Join Group</button>
                             </div>
                         </div>
                     }
@@ -29,7 +36,7 @@
         </div>
     
   
-        <!-- Modal Structure -->
+        <!-- Create Group Modal Structure -->
         <div class="modal fade" id="createGroupModal" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -39,6 +46,10 @@
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
+                            <label for="groupName" class="form-label"><b>Group Name</b></label>
+                            <input id="groupName" class="form-control" placeholder="Enter your study group's name">
+                        </div>
+                        <div class="mb-3">
                             <label for="class" class="form-label"><b>Class</b></label>
                             <input id="class" class="form-control" placeholder="Enter class">
                         </div>
@@ -47,17 +58,66 @@
                             <textarea id="studyContent" class="form-control" placeholder="Brief description of the course content that will be studied"></textarea>
                         </div>
                         <div class="mb-3">
-                            <label for="numMembers" class="form-label"><b>Number of Members</b></label>
-                            <input id="numMembers" class="form-control" placeholder="Enter maximum number of members for group" />
+                            <label for="maxMembers" class="form-label"><b>Max Number of Members</b></label>
+                            <input id="maxMembers" class="form-control" placeholder="Enter maximum number of members for group" />
                         </div>
                         <div class="mb-3">
-                          <label for="freeTimes" class="form-label"><b>Free Times</b></label>
-                          <textarea id="freeTimes" class="form-control" placeholder="Enter the times you are free to study"></textarea>
+                            <label for="meetingLocation" class="form-label"><b>Meeting Location</b></label>
+                            <input id="meetingLocation" class="form-control" placeholder="Enter group's meeting location" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="meetingFrequency" class="form-label"><b>Meeting Frequency</b></label>
+                            <select id="meetingFrequency" class="form-select">
+                                <option value="" disabled selected>Choose how often your group will meet</option>
+                                <option value="once">Once</option>
+                                <option value="daily">Daily</option>
+                                <option value="weekly">Weekly</option>
+                                <option value="monthly">Monthly</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                          <label for="meetingTimes" class="form-label"><b>Meeting Times</b></label>
+                          <textarea id="meetingTimes" class="form-control" placeholder="Enter your group's meeting date and time"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn yellow-button" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn green-button">Create Group</button>
+                        <button type="button" class="btn green-button" (click)="createGroup()">Create Group</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- View Joined Groups Modal Structure -->
+        <div class="modal fade" id="viewJoinedGroupsModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header yellow-bg green-text">
+                        <h4 class="modal-title" id="viewJoinedGroupsModalLabel">View Your Joined Group</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            @for (group of joinedGroups; track group.id) {
+                              <div class="col-6 mb-2">
+                                <div class="card group-card p-2">
+                                    <h3>{{ group.group_name }}</h3>
+                                    <h5>Class: {{ group.class }}</h5>
+                                    <p>{{ group.study_content }}</p>
+                                    <p>Meeting Location: {{ group.meeting_location }}</p>
+                                    <p>Meeting Frequency: {{ group.meeting_frequency }}</p>
+                                    <p>Meeting Times: {{ group.meeting_times }}</p>
+                                    <p>Max Members: {{ group.max_members }}</p>
+                                    <p>Group Members: {{ group.group_members?.join(', ') }}</p>
+                                    <button class="btn green-button" (click)="leaveGroup(group.id)">Leave Group</button>
+                                </div>
+                              </div>
+                            }
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn yellow-button" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
