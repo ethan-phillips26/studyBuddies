@@ -49,10 +49,24 @@ export class UserService {
   
   async setMatches(matches: string[]) {
     const userDocRef = this.getUserDocRef();
-    const docSnap = await getDoc(userDocRef);
-    const existingMatches = docSnap.exists() ? docSnap.data()['matches'] || [] : [];
+    const userDoc = await getDoc(userDocRef);
+    const existingMatches = userDoc.exists() ? userDoc.data()['matches'] || [] : [];
     const combinedMatches = [...existingMatches, ...matches];
     await updateDoc(userDocRef, { matches: combinedMatches });
+  }
+
+  async setOtherMatches(matches: string[], uid:string) {
+    const userDocRef = this.getOtherUserDocRef(uid);
+    const userDoc = await getDoc(userDocRef);
+    const existingMatches = userDoc.exists() ? userDoc.data()['matches'] || [] : [];
+    const combinedMatches = [...existingMatches, ...matches];
+    await updateDoc(userDocRef, { matches: combinedMatches });
+  }
+  
+  async clearMatches() {
+    const userDocRef = this.getUserDocRef();
+    const userDoc = await getDoc(userDocRef);
+    await updateDoc(userDocRef, {matches: []});
   }
   
 

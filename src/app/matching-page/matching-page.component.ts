@@ -74,6 +74,7 @@ export class MatchingPageComponent implements OnInit {
       this.message.initChat(uid, this.matches[this.currentUserIndex], fname, this.firstname, streamKey);
       
       this.user.setMatches([this.matches[this.currentUserIndex]]);
+      this.user.setOtherMatches([this.user.getUid() || ''], this.matches[this.currentUserIndex]);
       
       if (this.matches.length > this.currentUserIndex + 1) {
         this.currentUserIndex++;
@@ -91,6 +92,7 @@ export class MatchingPageComponent implements OnInit {
   }
   
   dislike() {
+    this.user.setMatches([this.matches[this.currentUserIndex]]);
     if (this.matches.length > this.currentUserIndex + 1) {
       this.currentUserIndex++;
       this.getNextMatch(this.currentUserIndex);
@@ -123,5 +125,9 @@ export class MatchingPageComponent implements OnInit {
         headers: { 'Content-Type': 'application/json' },
       }
     );
+  }
+
+  clearMatch() {
+    this.user.clearMatches();
   }
 }

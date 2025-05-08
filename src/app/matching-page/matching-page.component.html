@@ -1,6 +1,6 @@
 @if(!profileComplete()) {
 <h1>Please fully complete your profile to access matching!</h1>
-} @else { @if(currentMatches()) {
+} @else { @if(currentMatches()) {  
 <div class="container">
   <div class="row" id="page">
     <div class="col">
@@ -65,6 +65,14 @@
     </div>
   </div>
 </div>
+<div class="container mt-3 mb-3">
+  <div class="d-flex justify-content-end">
+    <button class="btn btn-outline-danger" (click)="clearMatch()">
+      <i class="bi bi-trash"></i> Clear Match History
+    </button>
+  </div>
+</div>1
+
 } @else {
 <h1>You have no new matches.</h1>
 } }
