@@ -1,0 +1,91 @@
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center my-1">
+        <h1>My Groups</h1>
+        <button class="btn green-button" [routerLink]="['/group']">Return to All Groups</button>
+    </div>
+    <div class="row">
+        <div class="card yellow-bg mb-3">
+            <div class="row p-3">
+                @for (group of createdGroups; track group.id) {
+                    <div class="col-6 mb-2">
+                        <div class="card group-card p-2">
+                            <div class="information">
+                                <h3>{{ group.group_name }}</h3>
+                                <h5>Class: {{ group.class }}</h5>
+                                <p>{{ group.study_content }}</p>
+                                <p>Meeting Location: {{ group.meeting_location }}</p>
+                                <p>Meeting Frequency: {{ group.meeting_frequency }}</p>
+                                <p>Meeting Times: {{ group.meeting_times }}</p>
+                                <p>Max Members: {{ group.max_members }}</p>
+                                <p>Group Members: {{ group.group_members?.join(', ') }}</p>
+                            </div>
+                            <div class="row">
+                                <hr>
+                                <div class="col-6">
+                                    <button class="btn green-button w-100" data-bs-toggle="modal" data-bs-target="#EditGroupModal" (click)="openEditModal(group)">Edit Group</button>
+                                </div>
+                                <div class="col-6">
+                                    <button class="btn yellow-button w-100" (click)="deleteGroup(group.id)">Delete Group</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Edit Group Modal Structure -->
+    <div class="modal fade" id="EditGroupModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header yellow-bg green-text">
+                    <h4 class="modal-title" id="editGroupModalLabel">Edit Group</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="groupName" class="form-label"><b>Group Name</b></label>
+                        <input id="groupName" class="form-control" placeholder="Enter your study group's name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="class" class="form-label"><b>Class</b></label>
+                        <input id="class" class="form-control" placeholder="Enter class">
+                    </div>
+                    <div class="mb-3">
+                        <label for="studyContent" class="form-label"><b>Studying Content</b></label>
+                        <textarea id="studyContent" class="form-control" placeholder="Brief description of the course content that will be studied"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="maxMembers" class="form-label"><b>Max Number of Members</b></label>
+                        <input id="maxMembers" class="form-control" placeholder="Enter maximum number of members for group" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="meetingLocation" class="form-label"><b>Meeting Location</b></label>
+                        <input id="meetingLocation" class="form-control" placeholder="Enter group's meeting location" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="meetingFrequency" class="form-label"><b>Meeting Frequency</b></label>
+                        <select id="meetingFrequency" class="form-select">
+                            <option value="" disabled selected>Choose how often your group will meet</option>
+                            <option value="once">Once</option>
+                            <option value="daily">Daily</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="monthly">Monthly</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                      <label for="meetingTimes" class="form-label"><b>Meeting Times</b></label>
+                      <textarea id="meetingTimes" class="form-control" placeholder="Enter your group's meeting date and time"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn yellow-button" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn green-button" (click)="updateGroup()">Update Group</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

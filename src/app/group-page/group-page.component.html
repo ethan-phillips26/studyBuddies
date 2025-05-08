@@ -4,6 +4,7 @@
             <h1>Buddy Up!</h1>
             <input type="text" placeholder="Search by class" [(ngModel)]="searchQuery" (input)="filterGroups()" />
             <button class="btn green-button mx-3" data-bs-toggle="modal" data-bs-target="#viewJoinedGroupsModal" (click)="viewJoinedGroups()">View Joined Groups</button>
+            <button class="btn green-button" [routerLink]="['/edit-group']">View Your Created Groups</button>
         </div>
     </div>
     <div class="row">
