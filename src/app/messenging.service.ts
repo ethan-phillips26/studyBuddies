@@ -55,7 +55,7 @@ export class MessagingService {
     }
   }
 
-  async createGroupChannel(uid: string, name: string) {
+  async createGroupChannel(uid: string, name: string, date:string) {
 
     await this.initChatClient();
     const client = this.chatService.chatClient;
@@ -65,7 +65,7 @@ export class MessagingService {
       return;
     }
 
-    const channel = client.channel('messaging', (uid + name).replace(/\s+/g, ''), {
+    const channel = client.channel('messaging', (name + date).replace(/\s+/g, ''), {
       members: [uid],
       name: name,
     });
@@ -78,9 +78,8 @@ export class MessagingService {
     }
   }
 
-  async addGroupChannelMember(uidUser: string, uidCreator: string, name: string) {
-    const channelId = uidCreator + name;
-    const channel = this.chatService.chatClient.channel('messaging', channelId.replace(/\s+/g, ''));
+  async addGroupChannelMember(uidUser: string, channelId: string) {
+    const channel = this.chatService.chatClient.channel('messaging', channelId);
     await channel.addMembers([uidUser]);
   }
 
@@ -92,4 +91,10 @@ export class MessagingService {
       console.error(error);
     }
   }
+
+  async removeGroupChannelMember(userId: string, channelId: string) {
+    const channel = this.chatService.chatClient.channel('messaging', channelId);
+    await channel.removeMembers([userId]);
+  }
+  
 }

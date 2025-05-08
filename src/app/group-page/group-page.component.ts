@@ -64,7 +64,7 @@ export class GroupPageComponent {
   
       // Update group_members array with logged-in user's ID
       const updatedMembers = [...group['group_members'], userId];
-      this.message.addGroupChannelMember(this.user.getUid() || '', group['group_members'][0], group['group_name'].replace(/\s+/g, ''))
+      this.groupsService.addGroupChannelMember(groupId);
   
       this.groupsService.updateGroup(groupId, { group_members: updatedMembers })
         .then(() => alert('You joined the group successfully!'))
@@ -113,6 +113,9 @@ export class GroupPageComponent {
 
       // Remove user ID from `group_members` array
       const updatedMembers = group['group_members'].filter((memberId: any) => memberId !== userId);
+
+      // Remove user from channel
+      this.groupsService.leaveGroup(groupId)
 
       this.groupsService.updateGroup(groupId, { group_members: updatedMembers })
         .then(() => alert('You left the group successfully!'))

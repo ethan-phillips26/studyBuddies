@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { createEnvironmentInjector, inject, Injectable } from '@angular/core';
 import { addDoc, collection, collectionData, deleteDoc, doc, Firestore, getDoc, updateDoc } from '@angular/fire/firestore'
 import { Observable } from 'rxjs';
 import { MessagingService } from './messenging.service';
@@ -35,9 +35,11 @@ export class GroupsService {
     meeting_frequency: string; 
     meeting_times: string; 
     group_members: string[];
+    createdAt: Date;
   }) {
-    this.message.createGroupChannel(this.user.getUid() || '', groupData.group_name);
-    return await addDoc(this.groupsCollection, groupData);
+  
+    await addDoc(this.groupsCollection, groupData);
+    this.message.createGroupChannel(this.user.getUid() || '', groupData.group_name, groupData['createdAt'].toISOString().replace(/[^a-zA-Z0-9]/g, ''));
 
   }
 
@@ -53,7 +55,8 @@ export class GroupsService {
       const groupData = await this.getGroup(groupId);
   
       if (groupData) {
-        const channelId = this.user.getUid() + groupData['group_name'];
+        const createdAtString = (groupData['createdAt']).toDate().toISOString().replace(/[^a-zA-Z0-9]/g, '');
+        const channelId = (groupData['group_name'] + createdAtString).replace(/\s+/g, '');
   
         await this.message.deleteChannel(channelId);
   
@@ -66,5 +69,37 @@ export class GroupsService {
       
     }
   }
+
+  // Leave a group
+  async leaveGroup(groupId: string) {
+    const groupData = await this.getGroup(groupId);
+  
+    if (groupData) {
+      const createdAtString = groupData['createdAt'].toDate().toISOString().replace(/[^a-zA-Z0-9]/g, '');
+      const channelId = (groupData['group_name'] + createdAtString).replace(/\s+/g, '');
+      const userId = this.user.getUid();
+  
+     
+        await this.message.removeGroupChannelMember(userId || '', channelId);
+    } else {
+      console.error('Group not found');
+    }
+  }
+
+  async addGroupChannelMember(groupId: string) {
+    const groupData = await this.getGroup(groupId);
+  
+    if (groupData) {
+      const createdAtString = groupData['createdAt'].toDate().toISOString().replace(/[^a-zA-Z0-9]/g, '');
+      const channelId = (groupData['group_name'] + createdAtString).replace(/\s+/g, '');
+      const userId = this.user.getUid();
+  
+     
+        await this.message.addGroupChannelMember(userId || '', channelId);
+    } else {
+      console.error('Group not found');
+    }
+  }
+  
   
 }
