@@ -2,7 +2,6 @@ import { Component, inject } from '@angular/core';
 import { GroupsService } from '../groups.service';
 import { FormsModule } from '@angular/forms';
 import { Auth, getAuth } from '@angular/fire/auth';
-import { UserService } from '../user.service';
 import { RouterLink } from '@angular/router';
 import { MessagingService } from '../messenging.service';
 import { UserService } from '../user.service';
