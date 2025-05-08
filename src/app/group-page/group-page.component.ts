@@ -58,6 +58,11 @@ export class GroupPageComponent {
         alert('You are already a member of this group!');
         return;
       }
+      const memberCount = group['group_members'].length;
+      if(memberCount >= group['max_members']) {
+        alert('This group is full!');
+        return;
+      }
   
       // Update group_members array with logged-in user's ID
       const updatedMembers = [...group['group_members'], userId];
@@ -83,7 +88,7 @@ export class GroupPageComponent {
     this.joinedGroups = this.groups.filter(group => group.group_members.includes(userId));
   }
 
-  leaveGroup(groupId: string) {
+  async leaveGroup(groupId: string) {
     const auth: Auth = getAuth();
     const user = auth.currentUser;
 
@@ -93,6 +98,7 @@ export class GroupPageComponent {
     }
 
     const userId = user.uid;
+    const userName:string = ( await this.userService.getFname() || '') + ' ' + (await this.userService.getLname() || '');
 
     // Grab the group document 
     this.groupsService.getGroup(groupId).then((group) => {
@@ -107,10 +113,16 @@ export class GroupPageComponent {
         return;
       }
 
+
       // Remove user ID from `group_members` array
+      const index:number = group['group_members'].indexOf(userId);
+      group['group_names'].splice(index, 1);
+
+
+      const updatedNames = group['group_names'];
       const updatedMembers = group['group_members'].filter((memberId: any) => memberId !== userId);
 
-      this.groupsService.updateGroup(groupId, { group_members: updatedMembers })
+      this.groupsService.updateGroup(groupId, { group_members: updatedMembers, group_names: updatedNames })
         .then(() => alert('You left the group successfully!'))
         .catch(error => console.error('Error leaving groups: ', error));
     });
