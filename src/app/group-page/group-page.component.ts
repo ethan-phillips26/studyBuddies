@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { GroupsService } from '../groups.service';
 import { FormsModule } from '@angular/forms';
 import { Auth, getAuth } from '@angular/fire/auth';
+import { UserService } from '../user.service';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -17,6 +18,7 @@ export class GroupPageComponent {
   searchQuery: string = '';
 
   constructor(private groupsService: GroupsService) {}
+  private userService = inject(UserService);
 
   ngOnInit() {
     // Grab groups from Firebase and store them in the array
@@ -32,7 +34,7 @@ export class GroupPageComponent {
     );
   }
 
-  joinGroup(groupId: string) {
+  async joinGroup(groupId: string) {
     const auth: Auth = getAuth();
     const user = auth.currentUser;
   
@@ -42,6 +44,7 @@ export class GroupPageComponent {
     }
   
     const userId = user.uid;
+    const userName:string = ( await this.userService.getFname() || '') + ' ' + (await this.userService.getLname() || '');
   
     // Grab the group document
     this.groupsService.getGroup(groupId).then((group) => {
@@ -58,8 +61,8 @@ export class GroupPageComponent {
   
       // Update group_members array with logged-in user's ID
       const updatedMembers = [...group['group_members'], userId];
-  
-      this.groupsService.updateGroup(groupId, { group_members: updatedMembers })
+      const updatedNames = [...group['group_names'], userName];
+      this.groupsService.updateGroup(groupId, { group_members: updatedMembers, group_names: updatedNames})
         .then(() => alert('You joined the group successfully!'))
         .catch(error => console.error('Error joining group:', error));
     });
@@ -113,7 +116,7 @@ export class GroupPageComponent {
     });
   }
   
-  createGroup() {
+  async createGroup() {
     // Retrieve input values from the modal form 
     const groupName = (document.getElementById('groupName') as HTMLInputElement).value;
     const className = (document.getElementById('class') as HTMLInputElement).value;
@@ -135,6 +138,9 @@ export class GroupPageComponent {
     const userId = user.uid;
     let groupLeader:string[] = [];
     groupLeader.push(userId);
+    let groupLeaderName:string[] = [];
+    groupLeaderName.push(( await this.userService.getFname() || '') + ' ' + (await this.userService.getLname() || ''))
+
 
     // Build the group object with Firebase field names
     const groupData = {
@@ -146,6 +152,7 @@ export class GroupPageComponent {
       meeting_frequency: meetingFrequency,
       meeting_times: meetingTimes,
       group_members: groupLeader, // Array that holds initially just the group creator
+      group_names: groupLeaderName, // Empty array to hold names
       createdAt: new Date(),
     }
 

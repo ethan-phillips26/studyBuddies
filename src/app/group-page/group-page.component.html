@@ -21,7 +21,7 @@
                                 <p>Meeting Frequency: {{ group.meeting_frequency }}</p>
                                 <p>Meeting Times: {{ group.meeting_times }}</p>
                                 <p>Max Members: {{ group.max_members }}</p>
-                                <p>Group Members: {{ group.group_members?.join(', ') }}</p>
+                                <p>Group Members: {{ group.group_names?.join(', ') }}</p>
                                 <button class="btn green-button" (click)="joinGroup(group.id)">Join Group</button>
                             </div>
                         </div>
