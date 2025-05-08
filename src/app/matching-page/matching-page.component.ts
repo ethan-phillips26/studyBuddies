@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { UserService } from '../user.service';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { delay, Observable } from 'rxjs';
 import { MessagingService } from '../messenging.service';
 
 @Component({
@@ -129,5 +129,9 @@ export class MatchingPageComponent implements OnInit {
 
   clearMatch() {
     this.user.clearMatches();
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
   }
+  
 }

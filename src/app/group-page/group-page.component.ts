@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { Auth, getAuth } from '@angular/fire/auth';
 import { UserService } from '../user.service';
 import { RouterLink } from '@angular/router';
+import { MessagingService } from '../messenging.service';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-group-page',
@@ -19,6 +21,9 @@ export class GroupPageComponent {
 
   constructor(private groupsService: GroupsService) {}
   private userService = inject(UserService);
+
+  message = inject(MessagingService);
+  user = inject(UserService);
 
   ngOnInit() {
     // Grab groups from Firebase and store them in the array
@@ -37,6 +42,7 @@ export class GroupPageComponent {
   async joinGroup(groupId: string) {
     const auth: Auth = getAuth();
     const user = auth.currentUser;
+
   
     if (!user) {
       alert('You must be logged in to join a group.');
@@ -66,6 +72,8 @@ export class GroupPageComponent {
   
       // Update group_members array with logged-in user's ID
       const updatedMembers = [...group['group_members'], userId];
+      this.groupsService.addGroupChannelMember(groupId);
+      this.groupsService.updateGroup(groupId, { group_members: updatedMembers })
       const updatedNames = [...group['group_names'], userName];
       this.groupsService.updateGroup(groupId, { group_members: updatedMembers, group_names: updatedNames})
         .then(() => alert('You joined the group successfully!'))
@@ -135,7 +143,10 @@ export class GroupPageComponent {
         return;
       }
 
-      this.groupsService.updateGroup(groupId, { group_members: updatedMembers, group_names: updatedNames })
+      // Remove user from channel
+      this.groupsService.leaveGroup(groupId)
+
+      this.groupsService.updateGroup(groupId, { group_members: updatedMembers })
         .then(() => alert('You left the group successfully!'))
         .catch(error => console.error('Error leaving groups: ', error));
     });

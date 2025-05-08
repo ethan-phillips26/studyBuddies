@@ -74,5 +74,13 @@
 </div>
 
 } @else {
-<h1>You have no new matches.</h1>
+  <h1 class="text-center">You have no new matches.</h1>
+  <div class="container mt-3 mb-3">
+    <div class="d-flex justify-content-center">
+      <button class="btn btn-outline-danger" (click)="clearMatch()">
+        <i class="bi bi-trash"></i> Clear Match History
+      </button>
+    </div>
+  </div>
+  
 } }
