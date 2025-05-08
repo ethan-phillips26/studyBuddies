@@ -65,6 +65,26 @@ export class EditGroupPageComponent {
     this.selectedGroup.meeting_frequency = (document.getElementById('meetingFrequency') as HTMLSelectElement).value;
     this.selectedGroup.meeting_times = (document.getElementById('meetingTimes') as HTMLTextAreaElement).value;
 
+    if (
+      this.selectedGroup.group_name.replace(' ', '')         == '' ||
+      this.selectedGroup.class.replace(' ', '')              == '' ||
+      this.selectedGroup.study_content.replace(' ', '')      == '' ||
+      this.selectedGroup.max_members                         == '' ||
+      this.selectedGroup.meeting_location.replace(' ', '')   == '' ||
+      this.selectedGroup.meeting_frequency.replace(' ', '')  == '' ||
+      this.selectedGroup.meeting_times.replace(' ', '')      == ''
+    ) {
+      alert('You must fill all fields.');
+      return;
+    }
+    if (
+      Number(this.selectedGroup.max_members) < 2
+    ) {
+      alert('Max number of members must be at least 2');
+      return;
+    }
+
+
     this.groupsService.updateGroup(this.selectedGroup.id, this.selectedGroup)
     .then(() => {
       alert('Group updated successfully!');

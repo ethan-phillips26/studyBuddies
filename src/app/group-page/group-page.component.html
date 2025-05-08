@@ -48,26 +48,26 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="groupName" class="form-label"><b>Group Name</b></label>
-                            <input id="groupName" class="form-control" placeholder="Enter your study group's name">
+                            <input required id="groupName" class="form-control" placeholder="Enter your study group's name">
                         </div>
                         <div class="mb-3">
                             <label for="class" class="form-label"><b>Class</b></label>
-                            <input id="class" class="form-control" placeholder="Enter class">
+                            <input required id="class" class="form-control" placeholder="Enter class">
                         </div>
                         <div class="mb-3">
                             <label for="studyContent" class="form-label"><b>Studying Content</b></label>
-                            <textarea id="studyContent" class="form-control" placeholder="Brief description of the course content that will be studied"></textarea>
+                            <textarea required id="studyContent" class="form-control" placeholder="Brief description of the course content that will be studied"></textarea>
                         </div>
                         <div class="mb-3">
                             <label for="maxMembers" class="form-label"><b>Max Number of Members</b></label>
-                            <input id="maxMembers" type="number" class="form-control" placeholder="Enter maximum number of members for group" />
+                            <input required id="maxMembers" type="number" class="form-control" min="2" placeholder="Enter maximum number of members for group" />
                         </div>
                         <div class="mb-3">
                             <label for="meetingLocation" class="form-label"><b>Meeting Location</b></label>
-                            <input id="meetingLocation" class="form-control" placeholder="Enter group's meeting location" />
+                            <input required id="meetingLocation" class="form-control" placeholder="Enter group's meeting location" />
                         </div>
                         <div class="mb-3">
-                            <label for="meetingFrequency" class="form-label"><b>Meeting Frequency</b></label>
+                            <label required for="meetingFrequency" class="form-label"><b>Meeting Frequency</b></label>
                             <select id="meetingFrequency" class="form-select">
                                 <option value="" disabled selected>Choose how often your group will meet</option>
                                 <option value="once">Once</option>
@@ -79,7 +79,7 @@
                         </div>
                         <div class="mb-3">
                           <label for="meetingTimes" class="form-label"><b>Meeting Times</b></label>
-                          <textarea id="meetingTimes" class="form-control" placeholder="Enter your group's meeting date and time"></textarea>
+                          <textarea required id="meetingTimes" class="form-control" placeholder="Enter your group's meeting date and time"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">

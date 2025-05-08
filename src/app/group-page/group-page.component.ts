@@ -103,6 +103,7 @@ export class GroupPageComponent {
     // Grab the group document 
     this.groupsService.getGroup(groupId).then((group) => {
       if(!group) {
+        alert('Group no longer exists!');
         console.error('Group not found');
         return;
       }
@@ -121,6 +122,18 @@ export class GroupPageComponent {
 
       const updatedNames = group['group_names'];
       const updatedMembers = group['group_members'].filter((memberId: any) => memberId !== userId);
+      if (updatedMembers.length == 0) {
+        const confirmDelete = confirm('Are you sure you want to leave this group? The group will be deleted.');
+    
+        if (!confirmDelete) {
+          alert('Leave group cancelled.')
+          return;
+        }
+        this.groupsService.deleteGroup(groupId)
+        .then(() => alert('You left the group successfully!'))
+        .catch(error => console.error('Error deleting group: ', error));
+        return;
+      }
 
       this.groupsService.updateGroup(groupId, { group_members: updatedMembers, group_names: updatedNames })
         .then(() => alert('You left the group successfully!'))
@@ -138,6 +151,25 @@ export class GroupPageComponent {
     const meetingFrequency = (document.getElementById('meetingFrequency') as HTMLSelectElement).value;
     const meetingTimes = (document.getElementById('meetingTimes') as HTMLTextAreaElement).value;
     
+    if (
+      groupName.replace(' ', '')         == '' ||
+      className.replace(' ', '')         == '' ||
+      studyContent.replace(' ', '')      == '' ||
+      maxMembers                         == '' ||
+      meetingLocation.replace(' ', '')   == '' ||
+      meetingFrequency.replace(' ', '')  == '' ||
+      meetingTimes.replace(' ', '')      == ''
+    ) {
+      alert('You must fill all fields.');
+      return;
+    }
+    if (
+      Number(maxMembers) < 2
+    ) {
+      alert('Max number of members must be at least 2');
+      return;
+    }
+
     const auth: Auth = getAuth();
     const user = auth.currentUser;
 
@@ -177,6 +209,7 @@ export class GroupPageComponent {
       .catch(error => console.error('Error creating group:', error));
     
   }
+
 
   clearForm() {
     (document.getElementById('groupName') as HTMLInputElement).value = '';
