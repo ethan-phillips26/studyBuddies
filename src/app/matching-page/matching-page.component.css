@@ -4,9 +4,6 @@
 }
 
 #profile {
-    width: 50em;
-    height: 40em;
-    background-color: #ffc82e;
     border-radius: 5%;
 }
 
@@ -15,8 +12,8 @@
     overflow: auto;
     height: 225px;
     margin: 5px;
-    background-color: #005643;
 }
+
 h4 {
     color: white;
 }
@@ -24,7 +21,3 @@ h4 {
 p {
     color: #ffc82e;
 }
-
-/* #page {
-    display: inline;
-} */
