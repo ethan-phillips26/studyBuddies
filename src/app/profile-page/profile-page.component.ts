@@ -34,7 +34,11 @@ export class ProfilePageComponent implements OnInit {
 
   toggleEdit() {
     this.isEditing = !this.isEditing;
-    this.getUserData();
+    if(this.isEditing) {
+      this.applyUserData();
+    } else {
+      this.save()
+    }
   }
 
   async ngOnInit() {
@@ -54,6 +58,15 @@ export class ProfilePageComponent implements OnInit {
     if (this.imagePreview == null) {
       this.imagePreview = this.currentImageURL;
     }
+  }
+  async applyUserData() {
+    this.fname = this.currentFname;
+    this.lname = this.currentLname;
+    this.strengths = this.currentStrengths;
+    this.weaknesses = this.currentWeaknesses;
+    this.bio = this.currentBio;
+    this.freeTimes = this.currentFreeTimes;
+    this.classes = this.currentClasses;
   }
 
   onFileSelected(event: Event): void {

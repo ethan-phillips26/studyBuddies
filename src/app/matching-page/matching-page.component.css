@@ -13,7 +13,7 @@
 #item {
     border-radius: 2%;
     overflow: auto;
-    height: 250px;
+    height: 225px;
     margin: 5px;
     background-color: #005643;
 }
@@ -24,3 +24,7 @@ h4 {
 p {
     color: #ffc82e;
 }
+
+/* #page {
+    display: inline;
+} */
