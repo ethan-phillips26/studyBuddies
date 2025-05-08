@@ -1,6 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { addDoc, collection, collectionData, deleteDoc, doc, Firestore, getDoc, updateDoc } from '@angular/fire/firestore'
 import { Observable } from 'rxjs';
+import { MessagingService } from './messenging.service';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +10,8 @@ import { Observable } from 'rxjs';
 export class GroupsService {
   private firestore = inject(Firestore);
   private groupsCollection = collection(this.firestore, 'Groups'); // Reference to "Groups" collection 
+  message = inject(MessagingService);
+  user = inject(UserService);
 
   // Get all groups 
   getGroups(): Observable<any[]> {
@@ -32,7 +36,9 @@ export class GroupsService {
     meeting_times: string; 
     group_members: string[];
   }) {
+    this.message.createGroupChannel(this.user.getUid() || '', groupData.group_name);
     return await addDoc(this.groupsCollection, groupData);
+
   }
 
   // Update a group 
@@ -41,9 +47,24 @@ export class GroupsService {
     return await updateDoc(groupDocRef, updateData);
   }
 
-  // Update a group 
+  // Delete a group 
   async deleteGroup(groupId: string) {
-    const groupDocRef = doc(this.firestore, `Groups/${groupId}`);
-    return await deleteDoc(groupDocRef);
+    
+      const groupData = await this.getGroup(groupId);
+  
+      if (groupData) {
+        const channelId = this.user.getUid() + groupData['group_name'];
+  
+        await this.message.deleteChannel(channelId);
+  
+        const groupDocRef = doc(this.firestore, `Groups/${groupId}`);
+        await deleteDoc(groupDocRef);
+  
+        console.log('Group deleted');
+      } else {
+        console.error('Group not found');
+      
+    }
   }
+  
 }

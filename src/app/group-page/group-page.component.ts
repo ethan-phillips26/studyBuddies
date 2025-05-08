@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { GroupsService } from '../groups.service';
 import { FormsModule } from '@angular/forms';
 import { Auth, getAuth } from '@angular/fire/auth';
 import { RouterLink } from '@angular/router';
+import { MessagingService } from '../messenging.service';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-group-page',
@@ -17,6 +19,9 @@ export class GroupPageComponent {
   searchQuery: string = '';
 
   constructor(private groupsService: GroupsService) {}
+
+  message = inject(MessagingService);
+  user = inject(UserService);
 
   ngOnInit() {
     // Grab groups from Firebase and store them in the array
@@ -35,6 +40,7 @@ export class GroupPageComponent {
   joinGroup(groupId: string) {
     const auth: Auth = getAuth();
     const user = auth.currentUser;
+
   
     if (!user) {
       alert('You must be logged in to join a group.');
@@ -58,6 +64,7 @@ export class GroupPageComponent {
   
       // Update group_members array with logged-in user's ID
       const updatedMembers = [...group['group_members'], userId];
+      this.message.addGroupChannelMember(this.user.getUid() || '', group['group_members'][0], group['group_name'].replace(/\s+/g, ''))
   
       this.groupsService.updateGroup(groupId, { group_members: updatedMembers })
         .then(() => alert('You joined the group successfully!'))
