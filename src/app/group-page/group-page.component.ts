@@ -145,7 +145,7 @@ export class GroupPageComponent {
       // Remove user from channel
       this.groupsService.leaveGroup(groupId)
 
-      this.groupsService.updateGroup(groupId, { group_members: updatedMembers })
+      this.groupsService.updateGroup(groupId, { group_members: updatedMembers, group_names: updatedNames })
         .then(() => alert('You left the group successfully!'))
         .catch(error => console.error('Error leaving groups: ', error));
     });
