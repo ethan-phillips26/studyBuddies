@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import { GroupsService } from '../groups.service';
 import { FormsModule } from '@angular/forms';
 import { Auth, getAuth } from '@angular/fire/auth';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-group-page',
-  imports: [FormsModule],
+  imports: [FormsModule, RouterLink],
   templateUrl: './group-page.component.html',
   styleUrl: './group-page.component.css'
 })
@@ -121,6 +122,19 @@ export class GroupPageComponent {
     const meetingLocation = (document.getElementById('meetingLocation') as HTMLInputElement).value;
     const meetingFrequency = (document.getElementById('meetingFrequency') as HTMLSelectElement).value;
     const meetingTimes = (document.getElementById('meetingTimes') as HTMLTextAreaElement).value;
+    
+    const auth: Auth = getAuth();
+    const user = auth.currentUser;
+
+
+    if (!user) {
+      alert('You must be logged in to leave a group.');
+      return;
+    }
+
+    const userId = user.uid;
+    let groupLeader:string[] = [];
+    groupLeader.push(userId);
 
     // Build the group object with Firebase field names
     const groupData = {
@@ -131,7 +145,7 @@ export class GroupPageComponent {
       meeting_location: meetingLocation,
       meeting_frequency: meetingFrequency,
       meeting_times: meetingTimes,
-      group_members: [], // Empty array to hold members
+      group_members: groupLeader, // Array that holds initially just the group creator
       createdAt: new Date(),
     }
 
@@ -142,6 +156,7 @@ export class GroupPageComponent {
         this.clearForm(); // Clears the form after successful submission
       })
       .catch(error => console.error('Error creating group:', error));
+    
   }
 
   clearForm() {
@@ -153,5 +168,6 @@ export class GroupPageComponent {
     (document.getElementById('meetingFrequency') as HTMLSelectElement).value = '';
     (document.getElementById('meetingTimes') as HTMLTextAreaElement).value = '';
   }
+
 
 }

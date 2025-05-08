@@ -40,4 +40,10 @@ export class GroupsService {
     const groupDocRef = doc(this.firestore, `Groups/${groupId}`);
     return await updateDoc(groupDocRef, updateData);
   }
+
+  // Update a group 
+  async deleteGroup(groupId: string) {
+    const groupDocRef = doc(this.firestore, `Groups/${groupId}`);
+    return await deleteDoc(groupDocRef);
+  }
 }

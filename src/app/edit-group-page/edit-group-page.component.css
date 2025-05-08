@@ -1,0 +1,13 @@
+.group-card {
+    height: 300px;
+}
+
+.information {
+    overflow: auto;
+}
+
+hr {
+    margin-left: 4%;
+    width: 92%;
+}
+

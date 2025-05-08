@@ -4,6 +4,7 @@ import { MatchingPageComponent } from './matching-page/matching-page.component';
 import { GroupPageComponent } from './group-page/group-page.component';
 import { MessengerPageComponent } from './messenger-page/messenger-page.component';
 import { ProfilePageComponent } from './profile-page/profile-page.component';
+import { EditGroupPageComponent } from './edit-group-page/edit-group-page.component';
 
 export const routes: Routes = [
     {
@@ -17,6 +18,11 @@ export const routes: Routes = [
         title: "StudyBuddies - GroupUp"
     },
     {
+        path:"edit-group",
+        component: EditGroupPageComponent,
+        title: "StudyBuddies - EditGroup"
+    },
+    {
         path:"message",
         component: MessengerPageComponent,
         title: "StudyBuddies - Message"
@@ -26,4 +32,5 @@ export const routes: Routes = [
         component: ProfilePageComponent,
         title: "StudyBuddies - Profile"
     },
+
 ];
