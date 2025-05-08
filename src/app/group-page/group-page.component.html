@@ -60,7 +60,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="maxMembers" class="form-label"><b>Max Number of Members</b></label>
-                            <input id="maxMembers" class="form-control" placeholder="Enter maximum number of members for group" />
+                            <input id="maxMembers" type="number" class="form-control" placeholder="Enter maximum number of members for group" />
                         </div>
                         <div class="mb-3">
                             <label for="meetingLocation" class="form-label"><b>Meeting Location</b></label>
@@ -111,7 +111,7 @@
                                     <p>Meeting Frequency: {{ group.meeting_frequency }}</p>
                                     <p>Meeting Times: {{ group.meeting_times }}</p>
                                     <p>Max Members: {{ group.max_members }}</p>
-                                    <p>Group Members: {{ group.group_members?.join(', ') }}</p>
+                                    <p>Group Members: {{ group.group_names?.join(', ') }}</p>
                                     <button class="btn green-button" (click)="leaveGroup(group.id)">Leave Group</button>
                                 </div>
                               </div>
