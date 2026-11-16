@@ -1,0 +1,242 @@
+<!-- MATCH -->
+@if (tab() === 'match') {
+  @if (demo.current(); as s) {
+    @for (id of [s.id]; track id) {
+      <app-match-card
+        [name]="s.fname + ' ' + s.lname"
+        [subtitle]="s.year + ' · ' + s.major"
+        [initials]="demo.initials(s)"
+        [color]="s.color"
+        [bio]="s.bio"
+        [strengths]="s.strengths"
+        [weaknesses]="s.weaknesses"
+        [freeTimes]="s.freeTimes"
+        [classes]="cardClasses(s.classes)"
+        (like)="demo.like()"
+        (skip)="demo.dislike()"
+      />
+    }
+    <div class="match-foot">
+      <span class="queue-count">{{ demo.candidates().length }} classmate{{ demo.candidates().length === 1 ? '' : 's' }} left to review</span>
+      <button class="btn btn-link clear-link" (click)="demo.resetMatches()">
+        <i class="bi bi-arrow-counterclockwise"></i> Clear Match History
+      </button>
+    </div>
+  } @else {
+    <div class="sb-empty">
+      <i class="bi bi-people"></i>
+      <h1>You have no new matches.</h1>
+      <p>Add classes on your profile to meet more classmates, or start over.</p>
+      <div class="d-flex flex-wrap justify-content-center gap-2 mt-3">
+        <a class="btn green-button rounded-pill px-4" routerLink="/demo/profile">Edit classes</a>
+        <button class="btn btn-link clear-link" (click)="demo.resetMatches()">
+          <i class="bi bi-arrow-counterclockwise"></i> Clear Match History
+        </button>
+      </div>
+    </div>
+  }
+}
+
+<!-- GROUPS -->
+@if (tab() === 'group') {
+  <div class="container sb-page">
+    <div class="sb-page-head">
+      <h1>Buddy Up!</h1>
+      <div class="sb-page-tools">
+        <label class="sb-search">
+          <i class="bi bi-search" aria-hidden="true"></i>
+          <span class="visually-hidden">Search groups</span>
+          <input class="form-control" placeholder="Search by class, e.g. CSCI 222"
+            [ngModel]="groupSearch()" (ngModelChange)="groupSearch.set($event)" />
+        </label>
+        <button class="btn green-button rounded-pill px-3" (click)="showCreate.set(!showCreate())" [attr.aria-expanded]="showCreate()">
+          <i class="bi" [class.bi-plus-lg]="!showCreate()" [class.bi-x-lg]="showCreate()"></i>
+          {{ showCreate() ? 'Cancel' : 'Create a Group' }}
+        </button>
+      </div>
+    </div>
+
+    @if (showCreate()) {
+      <form class="sb-create-panel" (submit)="createGroup(); $event.preventDefault()">
+        <h2>Create a Group</h2>
+        <div class="row g-3">
+          <div class="col-md-6"><label class="form-label" for="ng-name">Group Name</label><input id="ng-name" name="name" class="form-control" placeholder="Enter your study group's name" [(ngModel)]="newGroup.group_name" /></div>
+          <div class="col-md-6"><label class="form-label" for="ng-class">Class</label>
+            <select id="ng-class" name="class" class="form-select" [(ngModel)]="newGroup.class">
+              <option value="" disabled>Pick an NDSU class</option>
+              @for (c of demo.courses; track c.code) { <option [value]="c.code">{{ c.code }} · {{ c.title }}</option> }
+            </select>
+          </div>
+          <div class="col-12"><label class="form-label" for="ng-content">Studying Content</label><textarea id="ng-content" name="content" class="form-control" rows="2" placeholder="Brief description of the course content that will be studied" [(ngModel)]="newGroup.study_content"></textarea></div>
+          <div class="col-6 col-md-3"><label class="form-label" for="ng-max">Max Members</label><input id="ng-max" name="max" type="number" min="2" class="form-control" [(ngModel)]="newGroup.max_members" /></div>
+          <div class="col-6 col-md-3"><label class="form-label" for="ng-freq">Meeting Frequency</label>
+            <select id="ng-freq" name="freq" class="form-select" [(ngModel)]="newGroup.meeting_frequency">
+              <option>Weekly</option><option>Twice a week</option><option>Every other week</option><option>Monthly</option>
+            </select>
+          </div>
+          <div class="col-md-3"><label class="form-label" for="ng-loc">Meeting Location</label><input id="ng-loc" name="loc" class="form-control" placeholder="e.g. Main Library" [(ngModel)]="newGroup.meeting_location" /></div>
+          <div class="col-md-3"><label class="form-label" for="ng-times">Meeting Times</label><input id="ng-times" name="times" class="form-control" placeholder="e.g. Tue 6-8pm" [(ngModel)]="newGroup.meeting_times" /></div>
+        </div>
+        <button type="submit" class="btn yellow-button rounded-pill px-4 mt-3">Create Group</button>
+      </form>
+    }
+
+    <div class="sb-filter" role="group" aria-label="Which groups to show">
+      <button type="button" [attr.aria-pressed]="!showJoined()" (click)="showJoined.set(false)">All groups</button>
+      <button type="button" [attr.aria-pressed]="showJoined()" (click)="showJoined.set(true)">Joined</button>
+    </div>
+
+    <div class="sb-groups">
+      @for (g of filteredGroups(); track g.id) {
+        <app-group-card
+          [name]="g.group_name"
+          [classCode]="g.class"
+          [courseTitle]="demo.courseTitle(g.class)"
+          [about]="g.study_content"
+          [location]="g.meeting_location"
+          [times]="g.meeting_times"
+          [frequency]="g.meeting_frequency"
+          [members]="g.group_names"
+          [maxMembers]="g.max_members"
+          [isMember]="demo.isMember(g)"
+          (join)="demo.joinGroup(g)"
+          (leave)="demo.leaveGroup(g)"
+        />
+      } @empty {
+        <div class="sb-empty">
+          @if (showJoined()) {
+            <i class="bi bi-collection"></i>
+            <h2>You haven't joined any groups yet</h2>
+            <p>Join one from All groups, or create your own.</p>
+          } @else {
+            <i class="bi bi-search"></i>
+            <h2>No groups match "{{ groupSearch() }}"</h2>
+            <p>Try a different class, or create the group yourself.</p>
+          }
+        </div>
+      }
+    </div>
+  </div>
+}
+
+<!-- MESSAGES -->
+@if (tab() === 'message') {
+  @if (demo.matched().length === 0) {
+    <div class="sb-empty">
+      <i class="bi bi-chat-heart"></i>
+      <h1>No matches yet</h1>
+      <p>Like someone on the Match page to start a conversation.</p>
+    </div>
+  } @else {
+    <div class="chat-root">
+      <nav class="chat-list" aria-label="Conversations">
+        @for (id of demo.matched(); track id) {
+          <button class="chat-item" [class.active]="demo.activeChat() === id"
+            [attr.aria-current]="demo.activeChat() === id ? 'true' : null" (click)="demo.activeChat.set(id)">
+            <span class="avatar sm" [style.background]="demo.student(id).color">{{ demo.initials(demo.student(id)) }}</span>
+            <span class="chat-meta">
+              <span class="chat-name">{{ demo.student(id).fname }} {{ demo.student(id).lname }}</span>
+              <span class="chat-last">{{ demo.lastMessage(id) }}</span>
+            </span>
+          </button>
+        }
+      </nav>
+      <section class="chat-pane">
+        @if (demo.activeChat(); as id) {
+          <header class="chat-head">
+            <span class="avatar sm" [style.background]="demo.student(id).color">{{ demo.initials(demo.student(id)) }}</span>
+            <span>
+              <strong>{{ demo.student(id).fname }} {{ demo.student(id).lname }}</strong>
+              <small>{{ demo.student(id).year }} · {{ demo.student(id).major }}</small>
+            </span>
+          </header>
+          <div class="messages" aria-live="polite">
+            @for (m of demo.chats()[id]; track $index) {
+              <div class="bubble-row" [class.mine]="m.from === 'me'">
+                <div class="bubble">
+                  {{ m.text }}
+                  <time>{{ m.time }}</time>
+                </div>
+              </div>
+            }
+          </div>
+          <form class="composer" (submit)="send(); $event.preventDefault()">
+            <label class="visually-hidden" for="draft">Message</label>
+            <input id="draft" class="form-control" name="draft" placeholder="Type a message..." autocomplete="off" [(ngModel)]="draft" />
+            <button class="btn green-button rounded-pill px-3" type="submit" aria-label="Send"><i class="bi bi-send-fill"></i></button>
+          </form>
+        }
+      </section>
+    </div>
+  }
+}
+
+<!-- PROFILE: same fields as the real profile page -->
+@if (tab() === 'profile') {
+  @let p = editing() ? form : demo.me();
+  <form class="container sb-page" (submit)="saveEdit(); $event.preventDefault()">
+    <div class="sb-page-head">
+      <h1>Profile</h1>
+      <div class="sb-page-tools justify-content-end">
+        @if (editing()) {
+          <button type="button" class="btn btn-link clear-link" (click)="cancelEdit()">Cancel</button>
+          <button type="submit" class="btn green-button rounded-pill px-4"><i class="bi bi-check-lg"></i> Save</button>
+        } @else {
+          <button type="button" class="btn green-button rounded-pill px-4" (click)="startEdit()"><i class="bi bi-pencil"></i> Edit</button>
+        }
+      </div>
+    </div>
+    <p class="sb-page-note mb-4"><i class="bi bi-info-circle"></i> Demo profile. Edits are only kept in this browser tab. Change your classes to see different matches.</p>
+
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="photo mb-4">
+          @if (p.imageUrl) {
+            <img class="avatar lg mx-auto" [src]="p.imageUrl" alt="Your profile photo" width="168" height="168" />
+          } @else {
+            <div class="avatar lg mx-auto" [style.background]="p.color" aria-hidden="true">{{ demo.initials(p) }}</div>
+          }
+          @if (editing()) {
+            <label class="btn btn-sm btn-outline-secondary rounded-pill mt-3 photo-btn">
+              <i class="bi bi-camera"></i> Change photo
+              <input type="file" accept="image/*" class="visually-hidden" (change)="onPhoto($event)" />
+            </label>
+          }
+        </div>
+        <label class="form-label" for="p-bio">Brief Bio</label>
+        <textarea id="p-bio" name="bio" class="form-control" rows="4" placeholder="Tell us about yourself"
+          [disabled]="!editing()" [(ngModel)]="p.bio"></textarea>
+      </div>
+      <div class="col-md-4">
+        <div class="mb-3"><label class="form-label" for="p-fn">First Name</label>
+          <input id="p-fn" name="fname" class="form-control" placeholder="First Name" [disabled]="!editing()" [(ngModel)]="p.fname" /></div>
+        <div class="mb-3"><label class="form-label" for="p-st">Strengths</label>
+          <textarea id="p-st" name="strengths" class="form-control" placeholder="Enter your academic strengths" [disabled]="!editing()" [(ngModel)]="p.strengths"></textarea></div>
+        <div class="mb-3"><label class="form-label" for="p-wk">Weaknesses</label>
+          <textarea id="p-wk" name="weaknesses" class="form-control" placeholder="Enter your academic weaknesses" [disabled]="!editing()" [(ngModel)]="p.weaknesses"></textarea></div>
+      </div>
+      <div class="col-md-4">
+        <div class="mb-3"><label class="form-label" for="p-ln">Last Name</label>
+          <input id="p-ln" name="lname" class="form-control" placeholder="Last Name" [disabled]="!editing()" [(ngModel)]="p.lname" /></div>
+        <div class="mb-3"><label class="form-label" for="p-ft">Free Times</label>
+          <textarea id="p-ft" name="freeTimes" class="form-control" placeholder="Enter the times you are free to study" [disabled]="!editing()" [(ngModel)]="p.freeTimes"></textarea></div>
+        <fieldset class="mb-3" [disabled]="!editing()">
+          <legend class="form-label fs-6">Classes <span class="picked">{{ p.classes.length }} selected</span></legend>
+          <div class="class-picker" [class.locked]="!editing()">
+            @for (c of demo.courses; track c.code) {
+              <label class="class-opt" [class.on]="p.classes.includes(c.code)">
+                <input class="form-check-input" type="checkbox"
+                  [checked]="p.classes.includes(c.code)" (change)="toggleFormClass(c.code)" />
+                <span><strong>{{ c.code }}</strong> {{ c.title }}</span>
+              </label>
+            }
+          </div>
+        </fieldset>
+      </div>
+    </div>
+  </form>
+}
+
+@if (demo.toast()) {
+  <div class="demo-toast" role="status">{{ demo.toast() }}</div>
+}

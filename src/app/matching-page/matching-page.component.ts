@@ -3,9 +3,11 @@ import { UserService } from '../user.service';
 import { HttpClient } from '@angular/common/http';
 import { delay, Observable } from 'rxjs';
 import { MessagingService } from '../messenging.service';
+import { MatchCardClass, MatchCardComponent, formatClassCode } from '../match-card/match-card.component';
 
 @Component({
   selector: 'app-matching-page',
+  imports: [MatchCardComponent],
   templateUrl: './matching-page.component.html',
   styleUrls: ['./matching-page.component.css'],
 })
@@ -25,6 +27,7 @@ export class MatchingPageComponent implements OnInit {
   freeTimes: string = '';
   imageUrl: string = '';
   currentUserIndex: number = 0;
+  myClasses: string[] = [];
 
   currentMatches = signal(false);
   profileComplete = signal(false);
@@ -56,6 +59,7 @@ export class MatchingPageComponent implements OnInit {
     const bio = await this.user.getBio();
     const imageUrl = await this.user.getImageURL();
     const classes = await this.user.getClasses();
+    this.myClasses = Array.isArray(classes) ? classes : [];
     const freeTimes = await this.user.getFreeTimes();
 
     if(fname == "" || lname == "" || strengths == "" || weaknesses == "" || bio == "" || imageUrl == "" || classes == "" || freeTimes == "") {
@@ -99,6 +103,17 @@ export class MatchingPageComponent implements OnInit {
     } else {
       this.currentMatches.set(false);
     }
+  }
+
+  get cardClasses(): MatchCardClass[] {
+    const mine = new Set(this.myClasses);
+    return this.classes
+      .filter((c) => c)
+      .map((c) => ({ code: formatClassCode(c), shared: mine.has(c) }));
+  }
+
+  get initials() {
+    return (this.firstname[0] ?? '') + (this.lastname[0] ?? '');
   }
 
   getNextMatch(index: number) {

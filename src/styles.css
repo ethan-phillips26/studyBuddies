@@ -1,48 +1,289 @@
 @import url("https://fonts.googleapis.com/css2?family=Aleo:ital,wght@0,100..900;1,100..900&display=swap");
 
+/* NDSU green and gold, plus the neutrals the pages are built on. */
+:root {
+  --sb-green: #005643;
+  --sb-green-dark: #00402f;
+  --sb-green-tint: #e6f0ec;
+  --sb-gold: #ffc82e;
+  --sb-gold-dark: #e6b829;
+  --sb-gold-tint: #fff4cc;
+  --sb-ground: #f8f6ef;
+  --sb-surface: #ffffff;
+  --sb-ink: #1c2a25;
+  --sb-muted: #5a6a63;
+  --sb-line: #e2dfd3;
+  --sb-radius: 14px;
+  --sb-shadow: 0 1px 2px rgba(0, 64, 47, 0.06), 0 8px 24px -8px rgba(0, 64, 47, 0.18);
+}
+
+body {
+  background: var(--sb-ground);
+  color: var(--sb-ink);
+}
+
 .main-font {
   font-family: "Aleo", serif;
   font-style: normal;
 }
 
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+::selection {
+  background: var(--sb-gold);
+  color: var(--sb-green-dark);
+}
+
+html {
+  scrollbar-color: #b9c6c0 transparent;
+}
+
+:focus-visible {
+  outline: 3px solid var(--sb-gold);
+  outline-offset: 2px;
+}
+
 .yellow-text {
-  color: #ffc82e;
+  color: var(--sb-gold);
 }
 
 .green-text {
-  color: #005643;
+  color: var(--sb-green);
 }
 
 .yellow-button {
-  background-color: #ffc82e !important;
-  color: #005643 !important;
-  border: 2px solid #ffc82e !important;
-  transition: all 0.3s ease !important;
+  background-color: var(--sb-gold) !important;
+  color: var(--sb-green) !important;
+  border: 2px solid var(--sb-gold) !important;
+  transition: background-color 0.2s ease, border-color 0.2s ease !important;
 }
 
 .yellow-button:hover {
-  background-color: #e6b829 !important;
-  color: #005643 !important;
-  border: 2px solid #e6b829 !important;
+  background-color: var(--sb-gold-dark) !important;
+  color: var(--sb-green) !important;
+  border: 2px solid var(--sb-gold-dark) !important;
 }
 
 .green-button {
-    background-color: #005643 !important;
-    color: #e6b829 !important;
-    border: 2px solid #005643 !important;
-    transition: all 0.3s ease !important;
+  background-color: var(--sb-green) !important;
+  color: var(--sb-gold) !important;
+  border: 2px solid var(--sb-green) !important;
+  transition: background-color 0.2s ease, border-color 0.2s ease !important;
+}
+
+.green-button:hover {
+  background-color: var(--sb-green-dark) !important;
+  color: var(--sb-gold) !important;
+  border: 2px solid var(--sb-green-dark) !important;
+}
+
+.green-button:focus-visible,
+.yellow-button:focus-visible {
+  outline: 3px solid var(--sb-gold);
+  outline-offset: 2px;
+}
+
+.green-bg {
+  background-color: var(--sb-green) !important;
+}
+
+.yellow-bg {
+  background-color: var(--sb-gold) !important;
+}
+
+/* Bootstrap form controls in the app's colors instead of default blue. */
+.form-control,
+.form-select {
+  border-color: var(--sb-line);
+}
+
+.form-control:focus,
+.form-select:focus,
+.form-check-input:focus {
+  border-color: var(--sb-green);
+  box-shadow: 0 0 0 0.2rem rgba(0, 86, 67, 0.18);
+}
+
+.form-check-input:checked {
+  background-color: var(--sb-green);
+  border-color: var(--sb-green);
+}
+
+/* Read-only profile fields read as values, not greyed-out boxes. */
+.form-control:disabled {
+  background-color: var(--sb-surface);
+  color: var(--sb-ink);
+  border-style: dashed;
+  opacity: 1;
+}
+
+.form-label {
+  font-weight: 600;
+  color: var(--sb-green);
+}
+
+/* Shared empty-state block (no matches, incomplete profile, no chats). */
+.sb-empty {
+  max-width: 34rem;
+  margin: 3rem auto;
+  padding: 0 1rem;
+  text-align: center;
+}
+
+.sb-empty .bi {
+  font-size: 2.5rem;
+  color: var(--sb-green);
+}
+
+.sb-empty h1,
+.sb-empty h2 {
+  font-size: 1.6rem;
+  margin: 0.75rem 0 0.5rem;
+}
+
+.sb-empty p {
+  color: var(--sb-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
   }
-  
-  .green-button:hover {
-    background-color: #005643 !important;
-    color: #e6b829 !important;
-    border: 2px solid #005643 !important;
+}
+
+/* ---- Shared page scaffolding (Group up, Profile, demo pages) ---- */
+.sb-page {
+  padding-block: 2.5rem 3rem;
+}
+
+.sb-page-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.sb-page-head h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--sb-green);
+}
+
+.sb-page-tools {
+  display: flex;
+  gap: 0.6rem;
+  flex: 0 1 560px;
+}
+
+.sb-page-tools .btn {
+  white-space: nowrap;
+}
+
+.sb-page-note {
+  margin: 0;
+  color: var(--sb-muted);
+}
+
+.sb-search {
+  position: relative;
+  flex: 1;
+}
+
+.sb-search .bi {
+  position: absolute;
+  left: 0.9rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--sb-muted);
+}
+
+.sb-search input {
+  padding-left: 2.4rem;
+  border-radius: 999px;
+}
+
+.sb-create-panel {
+  background: var(--sb-surface);
+  border-radius: var(--sb-radius);
+  box-shadow: var(--sb-shadow);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  animation: sb-rise 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sb-create-panel h2 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.sb-groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.25rem;
+}
+
+.sb-groups .sb-empty {
+  grid-column: 1 / -1;
+}
+
+/* Segmented filter: All groups / Joined */
+.sb-filter {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: 999px;
+  background: var(--sb-surface);
+  border: 1px solid var(--sb-line);
+  margin-bottom: 1.25rem;
+}
+
+.sb-filter button {
+  border: none;
+  background: transparent;
+  color: var(--sb-muted);
+  padding: 0.35rem 1rem;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.sb-filter button[aria-pressed="true"] {
+  background: var(--sb-green);
+  color: var(--sb-gold);
+}
+
+@keyframes sb-rise {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+@media (max-width: 767.98px) {
+  .sb-page {
+    padding-block: 1.5rem 2rem;
   }
 
-  .green-bg {
-    background-color: #005643 !important;
+  .sb-page-tools {
+    flex-basis: 100%;
+    flex-wrap: wrap;
   }
 
-  .yellow-bg {
-    background-color: #ffc82e !important;
+  .sb-search {
+    flex-basis: 100%;
   }
+
+  .sb-groups {
+    grid-template-columns: 1fr;
+  }
+}

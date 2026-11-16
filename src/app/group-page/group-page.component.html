@@ -1,128 +1,106 @@
-<div class="container">
-    <div class="row">
-        <div class="my-4">
-            <h1>Buddy Up!</h1>
-            <input type="text" placeholder="Search by class" [(ngModel)]="searchQuery" (input)="filterGroups()" />
-            <button class="btn green-button mx-3" data-bs-toggle="modal" data-bs-target="#viewJoinedGroupsModal" (click)="viewJoinedGroups()">View Joined Groups</button>
-            <button class="btn green-button" [routerLink]="['/edit-group']">View Your Created Groups</button>
-        </div>
+<div class="container sb-page">
+  <div class="sb-page-head">
+    <h1>Buddy Up!</h1>
+    <div class="sb-page-tools">
+      <label class="sb-search">
+        <i class="bi bi-search" aria-hidden="true"></i>
+        <span class="visually-hidden">Search by class</span>
+        <input class="form-control" placeholder="Search by class" [(ngModel)]="searchQuery" (input)="filterGroups()" />
+      </label>
+      <button class="btn green-button rounded-pill px-3" (click)="showCreate.set(!showCreate())" [attr.aria-expanded]="showCreate()">
+        <i class="bi" [class.bi-plus-lg]="!showCreate()" [class.bi-x-lg]="showCreate()"></i>
+        {{ showCreate() ? 'Cancel' : 'Create a Group' }}
+      </button>
     </div>
-    <div class="row">
-        <div class="col-9">
-            <div class="card yellow-bg mb-3">
-                <div class="row p-3">
-                    @for (group of filteredGroups; track group.id) {
-                        <div class="col-6 mb-2">
-                            <div class="card group-card p-2">
-                                <h3>{{ group.group_name }}</h3>
-                                <h5>Class: {{ group.class }}</h5>
-                                <p>{{ group.study_content }}</p>
-                                <p>Meeting Location: {{ group.meeting_location }}</p>
-                                <p>Meeting Frequency: {{ group.meeting_frequency }}</p>
-                                <p>Meeting Times: {{ group.meeting_times }}</p>
-                                <p>Max Members: {{ group.max_members }}</p>
-                                <p>Group Members: {{ group.group_names?.join(', ') }}</p>
-                                <button class="btn green-button" (click)="joinGroup(group.id)">Join Group</button>
-                            </div>
-                        </div>
-                    }
-                </div>
-            </div>
-        </div>
-        <div class="col-3">
-            <h5>Can't find a group that works for you? Create your own!</h5>
-            <button class="btn green-button" data-bs-toggle="modal" data-bs-target="#createGroupModal">
-                Create a Group
-            </button>
-        </div>
-    
-  
-        <!-- Create Group Modal Structure -->
-        <div class="modal fade" id="createGroupModal" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header yellow-bg green-text">
-                        <h4 class="modal-title" id="createGroupModalLabel">Create a Group</h4>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="groupName" class="form-label"><b>Group Name</b></label>
-                            <input required id="groupName" class="form-control" placeholder="Enter your study group's name">
-                        </div>
-                        <div class="mb-3">
-                            <label for="class" class="form-label"><b>Class</b></label>
-                            <input required id="class" class="form-control" placeholder="Enter class">
-                        </div>
-                        <div class="mb-3">
-                            <label for="studyContent" class="form-label"><b>Studying Content</b></label>
-                            <textarea required id="studyContent" class="form-control" placeholder="Brief description of the course content that will be studied"></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="maxMembers" class="form-label"><b>Max Number of Members</b></label>
-                            <input required id="maxMembers" type="number" class="form-control" min="2" placeholder="Enter maximum number of members for group" />
-                        </div>
-                        <div class="mb-3">
-                            <label for="meetingLocation" class="form-label"><b>Meeting Location</b></label>
-                            <input required id="meetingLocation" class="form-control" placeholder="Enter group's meeting location" />
-                        </div>
-                        <div class="mb-3">
-                            <label required for="meetingFrequency" class="form-label"><b>Meeting Frequency</b></label>
-                            <select id="meetingFrequency" class="form-select">
-                                <option value="" disabled selected>Choose how often your group will meet</option>
-                                <option value="once">Once</option>
-                                <option value="daily">Daily</option>
-                                <option value="weekly">Weekly</option>
-                                <option value="monthly">Monthly</option>
-                                <option value="other">Other</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                          <label for="meetingTimes" class="form-label"><b>Meeting Times</b></label>
-                          <textarea required id="meetingTimes" class="form-control" placeholder="Enter your group's meeting date and time"></textarea>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn yellow-button" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn green-button" (click)="createGroup()">Create Group</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+  </div>
 
-
-        <!-- View Joined Groups Modal Structure -->
-        <div class="modal fade" id="viewJoinedGroupsModal" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header yellow-bg green-text">
-                        <h4 class="modal-title" id="viewJoinedGroupsModalLabel">View Your Joined Group</h4>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            @for (group of joinedGroups; track group.id) {
-                              <div class="col-6 mb-2">
-                                <div class="card group-card p-2">
-                                    <h3>{{ group.group_name }}</h3>
-                                    <h5>Class: {{ group.class }}</h5>
-                                    <p>{{ group.study_content }}</p>
-                                    <p>Meeting Location: {{ group.meeting_location }}</p>
-                                    <p>Meeting Frequency: {{ group.meeting_frequency }}</p>
-                                    <p>Meeting Times: {{ group.meeting_times }}</p>
-                                    <p>Max Members: {{ group.max_members }}</p>
-                                    <p>Group Members: {{ group.group_names?.join(', ') }}</p>
-                                    <button class="btn green-button" (click)="leaveGroup(group.id)">Leave Group</button>
-                                </div>
-                              </div>
-                            }
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn yellow-button" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
+  <!-- Create a group. Field ids are read by createGroup()/clearForm(). -->
+  @if (showCreate()) {
+    <form class="sb-create-panel" (submit)="createGroup(); $event.preventDefault()">
+      <h2>Create a Group</h2>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label for="groupName" class="form-label">Group Name</label>
+          <input required id="groupName" class="form-control" placeholder="Enter your study group's name" />
         </div>
-  
+        <div class="col-md-6">
+          <label for="class" class="form-label">Class</label>
+          <input required id="class" class="form-control" placeholder="Enter class, e.g. CSCI 161" />
+        </div>
+        <div class="col-12">
+          <label for="studyContent" class="form-label">Studying Content</label>
+          <textarea required id="studyContent" class="form-control" rows="2" placeholder="Brief description of the course content that will be studied"></textarea>
+        </div>
+        <div class="col-6 col-md-3">
+          <label for="maxMembers" class="form-label">Max Members</label>
+          <input required id="maxMembers" type="number" class="form-control" min="2" placeholder="e.g. 5" />
+        </div>
+        <div class="col-6 col-md-3">
+          <label for="meetingFrequency" class="form-label">Meeting Frequency</label>
+          <select id="meetingFrequency" class="form-select">
+            <option value="" disabled selected>Choose one</option>
+            <option value="once">Once</option>
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label for="meetingLocation" class="form-label">Meeting Location</label>
+          <input required id="meetingLocation" class="form-control" placeholder="e.g. Main Library" />
+        </div>
+        <div class="col-md-3">
+          <label for="meetingTimes" class="form-label">Meeting Times</label>
+          <input required id="meetingTimes" class="form-control" placeholder="e.g. Tue 6-8pm" />
+        </div>
+      </div>
+      <button type="submit" class="btn yellow-button rounded-pill px-4 mt-3">Create Group</button>
+    </form>
+  }
+
+  <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+    <div class="sb-filter" role="group" aria-label="Which groups to show">
+      <button type="button" [attr.aria-pressed]="!showJoined()" (click)="showJoined.set(false)">All groups</button>
+      <button type="button" [attr.aria-pressed]="showJoined()" (click)="showJoined.set(true)">Joined</button>
     </div>
+    <a class="btn btn-link created-link mb-3" [routerLink]="['/edit-group']">
+      View Your Created Groups <i class="bi bi-arrow-right"></i>
+    </a>
+  </div>
+
+  <div class="sb-groups">
+    @for (group of visibleGroups; track group.id) {
+      <app-group-card
+        [name]="group.group_name"
+        [classCode]="group.class"
+        [courseTitle]="courseTitle(group.class)"
+        [about]="group.study_content"
+        [location]="group.meeting_location"
+        [times]="group.meeting_times"
+        [frequency]="group.meeting_frequency"
+        [members]="group.group_names ?? []"
+        [maxMembers]="group.max_members"
+        [isMember]="isMember(group)"
+        (join)="joinGroup(group.id)"
+        (leave)="leaveGroup(group.id)"
+      />
+    } @empty {
+      <div class="sb-empty">
+        @if (showJoined()) {
+          <i class="bi bi-collection"></i>
+          <h2>You haven't joined any groups yet</h2>
+          <p>Join one from All groups, or create your own.</p>
+        } @else if (searchQuery) {
+          <i class="bi bi-search"></i>
+          <h2>No groups match "{{ searchQuery }}"</h2>
+          <p>Can't find a group that works for you? Create your own!</p>
+        } @else {
+          <i class="bi bi-collection"></i>
+          <h2>No study groups yet</h2>
+          <p>Can't find a group that works for you? Create your own!</p>
+        }
+      </div>
+    }
+  </div>
 </div>

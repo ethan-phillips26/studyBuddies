@@ -1,16 +1,17 @@
-<div class="container d-flex flex-column justify-content-center align-items-center main-font">
-    <h1 class="text-center mb-3">Welcome to StudyBuddies 👋</h1>
-    <h5 class="text-center mb-5">The social media platform built to help you succeed</h5>
-    
-  
-    <div class="card p-4" style="max-width: 400px; width: 100%">
-      <h2 class="text-center mb-4">Login with Google</h2>
-      <button id="google-login" class="btn btn-block yellow-button" (click) = "signInWithGoogle()">
-        Sign in with Google
-      </button>
-     
-    </div>
-    <p class="text-center mt-3">Please sign in with a valid NDSU Google account</p>
-  </div>
-  
+<section class="login main-font">
+  <div class="hero">
+    <h1>
+      <span class="welcome">Welcome to</span>
+      <span class="wordmark"><span class="w-study">Study</span><span class="w-buddies">Buddies</span></span>
+    </h1>
+    <p class="lede">The social media platform built to help you succeed</p>
 
+    <div class="login-actions">
+      <button id="google-login" class="btn yellow-button btn-lg" (click)="signInWithGoogle()">
+        <i class="bi bi-google"></i> Sign in with Google
+      </button>
+      <a routerLink="/demo" class="btn btn-lg demo-link">Just looking? Try the demo <i class="bi bi-arrow-right"></i></a>
+    </div>
+    <p class="hint"><i class="bi bi-info-circle"></i> Please sign in with a valid NDSU Google account</p>
+  </div>
+</section>

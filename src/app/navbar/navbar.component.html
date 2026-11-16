@@ -1,64 +1,49 @@
-<nav class="navbar navbar-expand-lg green-bg main-font">
-  <div class="container-fluid">
-    <a class="navbar-brand text-white" href="#">
-      <img class="nav_logo" src="images/nav_logo.jpg" alt="">
-      <span class="yellow-text">Study</span
-      ><span class="text-white">Buddies</span></a
-    >
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarText"
-      aria-controls="navbarText"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarText">
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-        <li class="nav-item me-3">
-          <a
-            class="btn yellow-button smaller-nav"
-            [hidden]="!isLoggedIn"
-            routerLink=""
-            ><i class="bi bi-hand-thumbs-up-fill"></i> Match</a
-          >
-        </li>
-        <li class="nav-item me-3">
-          <a
-            class="btn yellow-button smaller-nav"
-            [hidden]="!isLoggedIn"
-            routerLink="group"
-            ><i class="bi bi-collection-fill"></i> Group up</a
-          >
-        </li>
-        <li class="nav-item me-3">
-          <a
-            class="btn yellow-button smaller-nav"
-            [hidden]="!isLoggedIn"
-            routerLink="message"
-            ><i class="bi bi-envelope-fill"></i> Message</a
-          >
-        </li>
-        <li class="nav-item me-3">
-          <a
-            class="btn yellow-button smaller-nav"
-            [hidden]="!isLoggedIn"
-            routerLink="profile"
-            ><i class="bi bi-person-circle"></i> Profile</a
-          >
-        </li>
-        <li class="nav-item me-3">
-          <a
-            class="btn yellow-button smaller-nav"
-            [hidden]="!isLoggedIn"
-            routerLink="" (click) = "signOut()"
-            ><i class="bi bi-person-raised-hand"></i> Log Out</a
-          >
-        </li>
-      </ul>
-    </div>
+<nav class="navbar navbar-expand-lg navbar-dark green-bg main-font">
+  <div class="container-fluid px-3 px-lg-4">
+    <a class="navbar-brand d-flex align-items-center" [routerLink]="link('')">
+      <span class="brand-word"><span class="yellow-text">Study</span><span class="text-white">Buddies</span></span>
+    </a>
+    @if (showLinks()) {
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarText"
+        aria-controls="navbarText"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+          <li class="nav-item">
+            <a class="nav-pill" [routerLink]="link('')" routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }" ariaCurrentWhenActive="page"
+              ><i class="bi bi-hand-thumbs-up-fill"></i> Match</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-pill" [routerLink]="link('group')" routerLinkActive="active" ariaCurrentWhenActive="page"
+              ><i class="bi bi-collection-fill"></i> Group up</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-pill" [routerLink]="link('message')" routerLinkActive="active" ariaCurrentWhenActive="page"
+              ><i class="bi bi-envelope-fill"></i> Message</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-pill" [routerLink]="link('profile')" routerLinkActive="active" ariaCurrentWhenActive="page"
+              ><i class="bi bi-person-circle"></i> Profile</a>
+          </li>
+          <li class="nav-item nav-sep" aria-hidden="true"></li>
+          <li class="nav-item">
+            @if (isDemo()) {
+              <a class="nav-pill nav-exit" routerLink="/"><i class="bi bi-box-arrow-left"></i> Exit Demo</a>
+            } @else {
+              <a class="nav-pill nav-exit" routerLink="" (click)="signOut()"><i class="bi bi-person-raised-hand"></i> Log Out</a>
+            }
+          </li>
+        </ul>
+      </div>
+    }
   </div>
 </nav>

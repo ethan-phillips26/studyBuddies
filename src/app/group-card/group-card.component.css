@@ -1,0 +1,94 @@
+:host {
+  display: block;
+}
+
+.group {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--sb-surface);
+  border: 1px solid var(--sb-line);
+  border-radius: var(--sb-radius);
+  padding: 1.25rem 1.35rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.group:hover {
+  border-color: #c9d6d0;
+  box-shadow: var(--sb-shadow);
+}
+
+.group.mine {
+  border-color: var(--sb-green);
+  box-shadow: inset 0 0 0 1px var(--sb-green);
+}
+
+.group-class {
+  display: inline-block;
+  padding: 0.1rem 0.6rem;
+  border-radius: 999px;
+  background: var(--sb-green);
+  color: var(--sb-gold);
+  font-size: 0.85rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+h2 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0.6rem 0 0.1rem;
+  overflow-wrap: anywhere;
+}
+
+.group-course {
+  color: var(--sb-muted);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.group-about {
+  margin: 0.85rem 0;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.group-meta {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem;
+  display: grid;
+  gap: 0.3rem;
+  font-size: 0.92rem;
+  color: var(--sb-muted);
+}
+
+.group-meta .bi {
+  color: var(--sb-green);
+  margin-right: 0.35rem;
+}
+
+footer {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid var(--sb-line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.spots {
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--sb-muted);
+}
+
+.full-tag {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--sb-muted);
+  padding: 0.25rem 0.85rem;
+  border-radius: 999px;
+  background: var(--sb-ground);
+}

@@ -1,23 +1,13 @@
-#match_buttons {
-    font-size: 5em;
-    margin-top: 2.5em;
+:host {
+  display: block;
+  width: 100%;
 }
 
-#profile {
-    border-radius: 5%;
+.clear-link {
+  color: var(--sb-muted);
+  text-decoration: none;
 }
 
-#item {
-    border-radius: 2%;
-    overflow: auto;
-    height: 225px;
-    margin: 5px;
-}
-
-h4 {
-    color: white;
-}
-
-p {
-    color: #ffc82e;
+.clear-link:hover {
+  color: #b02a37;
 }

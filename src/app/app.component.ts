@@ -1,5 +1,6 @@
 import { Component, ElementRef, ViewChild, AfterViewInit, inject } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
+import { DemoStateService } from './demo-page/demo-state.service';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
 import { LoginPageComponent } from './login-page/login-page.component';
@@ -14,20 +15,21 @@ import { AuthService } from './auth.service';
     NavbarComponent,
     FooterComponent,
     LoginPageComponent,
-    RouterLink,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
 export class AppComponent implements AfterViewInit {
   title = 'studyBuddies';
-  @ViewChild('navbar', { static: true }) navbar!: ElementRef;
-  @ViewChild('footer', { static: true }) footer!: ElementRef;
+  @ViewChild('navbar', { static: true, read: ElementRef }) navbar!: ElementRef;
+  @ViewChild('footer', { static: true, read: ElementRef }) footer!: ElementRef;
 
   navbarHeight: number = 0;
   footerHeight: number = 0;
 
  auth = inject(AuthService);
+  // The demo pages work without signing in.
+  isDemo = inject(DemoStateService).isDemoRoute;
 
 
   ngAfterViewInit() {
