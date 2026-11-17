@@ -1,0 +1,56 @@
+<article class="match-card" [attr.aria-label]="name()">
+  <header class="mc-head">
+    @if (imageUrl()) {
+      <img class="mc-avatar" [src]="imageUrl()" alt="" width="96" height="96" />
+    } @else {
+      <div class="mc-avatar" [style.background]="color()" aria-hidden="true">{{ initials() }}</div>
+    }
+    <div class="mc-id">
+      <h2>{{ name() }}</h2>
+      @if (subtitle()) { <p>{{ subtitle() }}</p> }
+    </div>
+  </header>
+
+  <div class="mc-body">
+    <section class="mc-bio">
+      <h3>Bio</h3>
+      <p>{{ bio() }}</p>
+    </section>
+
+    <section>
+      <h3>Strengths</h3>
+      <p>{{ strengths() }}</p>
+    </section>
+    <section>
+      <h3>Weaknesses</h3>
+      <p>{{ weaknesses() }}</p>
+    </section>
+
+    <section>
+      <h3>Free Times</h3>
+      <p>{{ freeTimes() }}</p>
+    </section>
+    <section>
+      <h3>Classes</h3>
+      <ul class="mc-classes">
+        @for (c of classes(); track c.code) {
+          <li [class.shared]="c.shared" [attr.title]="c.title || null">
+            @if (c.shared) { <i class="bi bi-check2" aria-hidden="true"></i> }
+            {{ c.code }}
+            @if (c.shared) { <span class="visually-hidden">(you're in this class too)</span> }
+          </li>
+        }
+      </ul>
+    </section>
+  </div>
+</article>
+
+<div class="mc-actions">
+  <button type="button" class="mc-btn mc-skip" (click)="skip.emit()">
+    <i class="bi bi-hand-thumbs-down"></i> Skip
+  </button>
+  <button type="button" class="mc-btn mc-like" (click)="like.emit()">
+    <i class="bi bi-hand-thumbs-up-fill"></i> Like
+  </button>
+</div>
+<p class="mc-keys" aria-hidden="true"><kbd>←</kbd> skip · <kbd>→</kbd> like</p>

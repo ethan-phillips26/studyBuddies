@@ -1,4 +1,16 @@
-.group-card {
-    overflow: auto;
-    height: 300px;
+:host {
+  display: block;
+  width: 100%;
+  align-self: stretch;
+}
+
+.created-link {
+  color: var(--sb-green);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.created-link:hover {
+  color: var(--sb-green-dark);
+  text-decoration: underline;
 }

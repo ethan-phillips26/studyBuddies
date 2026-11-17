@@ -1,7 +1,8 @@
 :host {
   display: block;
-  height: 85vh;
-  width: 100vw;
+  height: calc(100dvh - var(--navbar-height, 66px) - var(--footer-height, 48px));
+  width: 100%;
+  align-self: stretch;
   overflow: hidden;
 }
 

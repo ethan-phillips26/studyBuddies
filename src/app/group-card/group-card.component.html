@@ -1,0 +1,25 @@
+<article class="group" [class.mine]="isMember()">
+  <header>
+    @if (classCode()) { <span class="group-class">{{ classCode() }}</span> }
+    <h2>{{ name() }}</h2>
+    @if (courseTitle()) { <p class="group-course">{{ courseTitle() }}</p> }
+  </header>
+  <p class="group-about">{{ about() }}</p>
+  <ul class="group-meta">
+    <li><i class="bi bi-geo-alt" aria-hidden="true"></i> {{ location() }}</li>
+    <li><i class="bi bi-clock" aria-hidden="true"></i> {{ times() }}@if (frequency()) { · {{ frequency() }} }</li>
+    @if (members().length) {
+      <li><i class="bi bi-people" aria-hidden="true"></i> {{ members().join(', ') }}</li>
+    }
+  </ul>
+  <footer>
+    <span class="spots">{{ members().length }}/{{ maxMembers() }} members</span>
+    @if (isMember()) {
+      <button class="btn btn-sm btn-outline-danger rounded-pill px-3" (click)="leave.emit()">Leave Group</button>
+    } @else if (isFull()) {
+      <span class="full-tag">Full</span>
+    } @else {
+      <button class="btn btn-sm green-button rounded-pill px-3" (click)="join.emit()">Join Group</button>
+    }
+  </footer>
+</article>

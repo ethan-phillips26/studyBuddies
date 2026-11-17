@@ -1,22 +1,26 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { GroupsService } from '../groups.service';
 import { FormsModule } from '@angular/forms';
 import { Auth, getAuth } from '@angular/fire/auth';
 import { RouterLink } from '@angular/router';
 import { MessagingService } from '../messenging.service';
 import { UserService } from '../user.service';
+import { GroupCardComponent } from '../group-card/group-card.component';
+import { formatClassCode } from '../match-card/match-card.component';
+import { NDSU_COURSES } from '../demo-page/demo-data';
 
 @Component({
   selector: 'app-group-page',
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink, GroupCardComponent],
   templateUrl: './group-page.component.html',
   styleUrl: './group-page.component.css'
 })
 export class GroupPageComponent {
   groups: any[] = []; // Stores all groups
-  joinedGroups: any[] = []; // Stores only the groups the user has joined
   filteredGroups: any[] = []; // Stored groups filtered by search bar
   searchQuery: string = '';
+  showJoined = signal(false); // "Joined" filter, replaces the old joined-groups modal
+  showCreate = signal(false); // inline create form, replaces the old modal
 
   constructor(private groupsService: GroupsService) {}
   private userService = inject(UserService);
@@ -28,7 +32,7 @@ export class GroupPageComponent {
     // Grab groups from Firebase and store them in the array
     this.groupsService.getGroups().subscribe((data) => {
       this.groups = data;
-      this.filteredGroups = data; // Initialize filtered list
+      this.filterGroups(); // keep the current search applied when groups update live
     })
   }
 
@@ -36,6 +40,24 @@ export class GroupPageComponent {
     this.filteredGroups = this.groups.filter(group =>
       group.class.toLowerCase().includes(this.searchQuery.toLowerCase())
     );
+  }
+
+  // Groups shown on the page: the search result, optionally narrowed to ones you're in.
+  get visibleGroups(): any[] {
+    return this.showJoined()
+      ? this.filteredGroups.filter((group) => this.isMember(group))
+      : this.filteredGroups;
+  }
+
+  isMember(group: any): boolean {
+    const uid = getAuth().currentUser?.uid; // same source joinGroup/leaveGroup use
+    return !!uid && (group.group_members ?? []).includes(uid);
+  }
+
+  // NDSU course title for codes like "CSCI 161" / "csci161"; blank for anything else.
+  courseTitle(cls: string): string {
+    const code = formatClassCode(cls ?? '');
+    return NDSU_COURSES.find((c) => c.code === code)?.title ?? '';
   }
 
   async joinGroup(groupId: string) {
@@ -78,21 +100,6 @@ export class GroupPageComponent {
         .then(() => alert('You joined the group successfully!'))
         .catch(error => console.error('Error joining group:', error));
     });
-  }
-
-  viewJoinedGroups() {
-    const auth: Auth = getAuth();
-    const user = auth.currentUser;
-
-    if (!user) {
-      alert('You must be logged in to view your joined groups.');
-      return;
-    }
-
-    const userId = user.uid;
-
-    // Grab groups where the `group_members` array includes the user's ID
-    this.joinedGroups = this.groups.filter(group => group.group_members.includes(userId));
   }
 
   async leaveGroup(groupId: string) {
@@ -215,6 +222,7 @@ export class GroupPageComponent {
       .then(() => {
         alert('Group created successfully!');
         this.clearForm(); // Clears the form after successful submission
+        this.showCreate.set(false);
       })
       .catch(error => console.error('Error creating group:', error));
     
